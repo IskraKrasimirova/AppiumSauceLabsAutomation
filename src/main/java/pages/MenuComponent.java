@@ -1,0 +1,33 @@
+package pages;
+
+import io.appium.java_client.AppiumBy;
+import io.appium.java_client.AppiumDriver;
+import org.openqa.selenium.WebElement;
+
+public class MenuComponent {
+    private final AppiumDriver driver;
+
+    private WebElement menuButton() {
+        return driver.findElement(AppiumBy.accessibilityId("View menu"));
+    }
+
+    private WebElement loginMenuItem() {
+        return driver.findElement(AppiumBy.accessibilityId("Login Menu Item"));
+    }
+
+    private WebElement catalogMenuItem() {
+        return driver.findElement(AppiumBy.androidUIAutomator("new UiSelector().text(\"Catalog\")"));
+    }
+
+    public MenuComponent(AppiumDriver driver) {
+        this.driver = driver;
+    }
+
+    public void openCatalog() {
+        catalogMenuItem().click();
+    }
+
+    public void openLogin() {
+        loginMenuItem().click();
+    }
+}

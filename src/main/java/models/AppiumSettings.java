@@ -5,8 +5,7 @@ public class AppiumSettings {
     public String AutomationName;
     public String DeviceName;
     public String PlatformVersion;
-    public String AppPackage;
-    public String AppActivity;
+    public String App;
     public String ServerUrl;
     public boolean NoReset;
 }

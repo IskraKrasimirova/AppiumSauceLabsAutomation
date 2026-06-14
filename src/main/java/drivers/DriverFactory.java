@@ -6,6 +6,7 @@ import io.appium.java_client.android.options.UiAutomator2Options;
 import models.AppiumSettings;
 
 import java.net.URL;
+import java.util.Objects;
 
 public class DriverFactory {
     private static AndroidDriver driver;
@@ -28,14 +29,20 @@ public class DriverFactory {
     private static AndroidDriver createDriver() {
         AppiumSettings settings = ConfigReader.getSettings();
 
+        String appPath = Objects.requireNonNull(
+                DriverFactory.class.getClassLoader().getResource(settings.App),
+                "APK file not found in resources!"
+        ).getPath().replaceFirst("^/", "");
+
         var options = new UiAutomator2Options()
                 .setAutomationName(settings.AutomationName)
                 .setDeviceName(settings.DeviceName)
                 .setPlatformName(settings.PlatformName)
                 .setPlatformVersion(settings.PlatformVersion)
-                .setAppPackage(settings.AppPackage)
-                .setAppActivity(settings.AppActivity)
-                .setNoReset(settings.NoReset);
+                .setApp(appPath)
+                .setNoReset(settings.NoReset)
+                .setAppWaitActivity("*")
+                .setAppWaitForLaunch(true);
 
         try {
             return new AndroidDriver(new URL(settings.ServerUrl), options);

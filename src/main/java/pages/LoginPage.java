@@ -3,14 +3,10 @@ package pages;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.AppiumBy;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
+public class LoginPage extends BasePage {
 
-
-public class LoginPage extends BasePage{
-
-    private WebElement loginHeader(){
+    private WebElement loginHeader() {
         return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/loginTV"));
     }
 
@@ -34,11 +30,11 @@ public class LoginPage extends BasePage{
         return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/savedPasswordTV"));
     }
 
-    private String getValidUsername(){
+    private String getValidUsername() {
         return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/username1TV")).getText();
     }
 
-    private String getValidPassword(){
+    private String getValidPassword() {
         return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/password1TV")).getText();
     }
 
@@ -46,30 +42,24 @@ public class LoginPage extends BasePage{
         super(driver);
     }
 
-    public void login(String username, String password){
-        usernameInput().clear();
-        usernameInput().sendKeys(username);
-        passwordInput().clear();
-        passwordInput().sendKeys(password);
+    public void login(String username, String password) {
+        driverExt.enterText(usernameInput(), username);
+        driverExt.enterText(passwordInput(), password);
+
         loginButton().click();
     }
 
-    public  void loginWithValidCredentials(){
-        login(getValidUsername(),getValidPassword());
+    public void loginWithValidCredentials() {
+        login(getValidUsername(), getValidPassword());
     }
 
     public boolean isAtLoginPage() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        driverExt.waitUntilVisible(loginHeader());
 
-        wait.until(driver ->
-                loginHeader().isDisplayed() &&
-                        usernameInput().isDisplayed() &&
-                        passwordInput().isDisplayed() &&
-                        loginButton().isDisplayed() &&
-                        usernamesText().isDisplayed() &&
-                        passwordText().isDisplayed()
-        );
-
-        return true;
+        return usernameInput().isDisplayed()
+                && passwordInput().isDisplayed()
+                && loginButton().isDisplayed()
+                && usernamesText().isDisplayed()
+                && passwordText().isDisplayed();
     }
 }

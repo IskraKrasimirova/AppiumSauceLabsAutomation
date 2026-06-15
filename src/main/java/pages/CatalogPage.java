@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 
 public class CatalogPage extends BasePage {
     private WebElement productsHeader() {
-        return driver.findElement(AppiumBy.accessibilityId("title"));
+        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/productTV"));
     }
 
     private WebElement productsList() {

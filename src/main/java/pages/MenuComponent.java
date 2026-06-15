@@ -19,15 +19,29 @@ public class MenuComponent {
         return driver.findElement(AppiumBy.androidUIAutomator("new UiSelector().text(\"Catalog\")"));
     }
 
+    private WebElement logoutMenuItem() {
+        return driver.findElement(AppiumBy.accessibilityId("Logout Menu Item"));
+    }
+
     public MenuComponent(AppiumDriver driver) {
         this.driver = driver;
     }
 
     public void openCatalog() {
+
         catalogMenuItem().click();
     }
 
     public void openLogin() {
+
         loginMenuItem().click();
+    }
+
+    public void logout() {
+        logoutMenuItem().click();
+    }
+
+    public boolean isUserLoggedIn(){
+        return logoutMenuItem().isDisplayed();
     }
 }

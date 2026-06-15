@@ -6,6 +6,7 @@ import io.appium.java_client.android.options.UiAutomator2Options;
 import models.AppiumSettings;
 
 import java.net.URL;
+import java.time.Duration;
 import java.util.Objects;
 
 public class DriverFactory {
@@ -45,7 +46,10 @@ public class DriverFactory {
                 .setAppWaitForLaunch(true);
 
         try {
-            return new AndroidDriver(new URL(settings.ServerUrl), options);
+            driver = new AndroidDriver(new URL(settings.ServerUrl), options);
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+
+            return driver;
         } catch (Exception e) {
             throw new RuntimeException("Invalid Appium server URL: " + settings.ServerUrl, e);
         }

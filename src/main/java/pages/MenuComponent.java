@@ -37,7 +37,7 @@ public class MenuComponent {
         loginMenuItem().click();
     }
 
-    public void logout() {
+    public void openLogout() {
         logoutMenuItem().click();
     }
 

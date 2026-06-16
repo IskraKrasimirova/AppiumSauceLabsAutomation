@@ -42,6 +42,10 @@ public class MenuComponent {
     }
 
     public boolean isUserLoggedIn(){
-        return logoutMenuItem().isDisplayed();
+        try {
+            return logoutMenuItem().isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

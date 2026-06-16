@@ -38,8 +38,28 @@ public class LoginPage extends BasePage {
         return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/password1TV")).getText();
     }
 
+    private WebElement usernameErrorText() {
+        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/nameErrorTV"));
+    }
+
+    private WebElement usernameErrorImage() {
+        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/usernameErrorIV"));
+    }
+
+    private WebElement passwordErrorText() {
+        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/passwordErrorTV"));
+    }
+
+    private WebElement passwordErrorImage() {
+        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/passwordErrorIV"));
+    }
+
     public LoginPage(AppiumDriver driver) {
         super(driver);
+    }
+
+    public NavBar navBar() {
+        return new NavBar(driver);
     }
 
     public void login(String username, String password) {
@@ -61,5 +81,29 @@ public class LoginPage extends BasePage {
                 && loginButton().isDisplayed()
                 && usernamesText().isDisplayed()
                 && passwordText().isDisplayed();
+    }
+
+    public boolean isUsernameErrorVisible() {
+        try {
+            return usernameErrorText().isDisplayed() && usernameErrorImage().isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean isPasswordErrorVisible() {
+        try {
+            return passwordErrorText().isDisplayed() && passwordErrorImage().isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public String getUsernameErrorMessage() {
+        return usernameErrorText().getText();
+    }
+
+    public String getPasswordErrorMessage() {
+        return passwordErrorText().getText();
     }
 }

@@ -5,7 +5,14 @@ import org.junit.jupiter.api.Test;
 import pages.CatalogPage;
 import pages.LoginPage;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.stream.Stream;
+
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.Arguments;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class LoginTests extends BaseTest {
     private CatalogPage catalogPage;
@@ -25,7 +32,7 @@ public class LoginTests extends BaseTest {
     }
 
     @Test
-    public  void userCanLoginSuccessfullyWithValidCredentials() {
+    public void userCanLoginSuccessfullyWithValidCredentials() {
         loginPage.loginWithValidCredentials();
 
         assertTrue(catalogPage.isAtCatalogPage());
@@ -33,5 +40,41 @@ public class LoginTests extends BaseTest {
         assertTrue(catalogPage.navBar().menu().isUserLoggedIn());
         catalogPage.navBar().closeMenu();
         assertTrue(catalogPage.isAtCatalogPage());
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidLoginData")
+    public void userCannotLoginWithInvalidCredentials(
+            String username,
+            String password,
+            boolean expectUsernameError,
+            boolean expectPasswordError) {
+        loginPage.login(username, password);
+
+        assertEquals(expectUsernameError, loginPage.isUsernameErrorVisible());
+        assertEquals(expectPasswordError, loginPage.isPasswordErrorVisible());
+
+        if (expectUsernameError) {
+            assertEquals("Username is required", loginPage.getUsernameErrorMessage());
+        }
+
+        if (expectPasswordError) {
+            assertEquals("Enter Password", loginPage.getPasswordErrorMessage());
+        }
+
+        loginPage.navBar().openMenu();
+        assertFalse(loginPage.navBar().menu().isUserLoggedIn());
+        loginPage.navBar().closeMenu();
+    }
+
+    private static Stream<Arguments> invalidLoginData() {
+        return Stream.of(
+                Arguments.of("", "", true, false),
+                Arguments.of("iskra@iskra.com", "", false, true),
+                Arguments.of("a", "", false, true),
+                Arguments.of("1", "", false, true),
+                Arguments.of("@", "", false, true),
+                Arguments.of("!@#$%^&*()_+=<>?|-;:", "", false, true)
+        );
     }
 }

@@ -9,6 +9,7 @@ import pages.LogoutComponent;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("logout")
 public class LogoutTests extends BaseTest {
     private CatalogPage catalogPage;
     private LoginPage loginPage;

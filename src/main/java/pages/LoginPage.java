@@ -30,12 +30,16 @@ public class LoginPage extends BasePage {
         return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/savedPasswordTV"));
     }
 
-    private String getValidUsername() {
-        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/username1TV")).getText();
+    private WebElement validUsernameText() {
+        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/username1TV"));
     }
 
-    private String getValidPassword() {
-        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/password1TV")).getText();
+    private WebElement validPasswordText() {
+        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/password1TV"));
+    }
+
+    private WebElement lockedUsernameText() {
+        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/username2TV"));
     }
 
     private WebElement usernameErrorText() {
@@ -73,6 +77,14 @@ public class LoginPage extends BasePage {
         login(getValidUsername(), getValidPassword());
     }
 
+    public String getValidUsername() {
+        return validUsernameText().getText();
+    }
+
+    public String getValidPassword() {
+        return validPasswordText().getText();
+    }
+
     public boolean isAtLoginPage() {
         driverExt.waitUntilVisible(loginHeader());
 
@@ -104,6 +116,22 @@ public class LoginPage extends BasePage {
     }
 
     public String getPasswordErrorMessage() {
+        return passwordErrorText().getText();
+    }
+
+    public String getLockedUsernameText() {
+        return lockedUsernameText().getText();
+    }
+
+    public boolean isLockedUserErrorVisible() {
+        try {
+            return passwordErrorText().isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public String getLockedUserErrorMessage() {
         return passwordErrorText().getText();
     }
 }

@@ -48,6 +48,18 @@ public class ProductDetailsPage extends BasePage{
         super(driver);
     }
 
+    public NavBar navBar() {
+        return new NavBar(driver);
+    }
+
+    public boolean isAtProductDetailsPage() {
+        driverExt.waitUntilVisible(productTitle());
+
+        return productImage().isDisplayed()
+                && productPrice().isDisplayed()
+                && addToCartButton().isDisplayed();
+    }
+
     public String getTitle() {
         return productTitle().getText();
     }
@@ -68,19 +80,25 @@ public class ProductDetailsPage extends BasePage{
         return Integer.parseInt(quantityValue().getText());
     }
 
-    public void selectColor(int index) {
-        colorOptions().get(index).click();
-    }
-
     public void addToCart() {
         addToCartButton().click();
     }
 
-    public void selectRandomColor() {
+    public void selectColor() {
         List<WebElement> colors = colorOptions();
+
+        if (colors.isEmpty()) {
+            throw new RuntimeException("No colors available for this product");
+        }
+
         int random = new Random().nextInt(colors.size());
         colors.get(random).click();
     }
+
+    public String getSelectedColor() {
+        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/colorTitleTV")).getText();
+    }
+
     // ---------- Scroll support ----------
 
     public void scrollToAddToCart() {

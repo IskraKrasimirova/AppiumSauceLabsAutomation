@@ -54,4 +54,8 @@ public class NavBar {
 
         driver.perform(Collections.singletonList(tap));
     }
+
+    public void openCart() {
+        cartButton().click();
+    }
 }

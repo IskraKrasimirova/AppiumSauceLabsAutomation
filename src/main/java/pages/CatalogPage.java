@@ -67,11 +67,11 @@ public class CatalogPage extends BasePage {
         return getProductName(index);
     }
 
-    public void scrollToLastProduct(int index) {
+    public void scrollToProduct(int index) {
         scrollUntilVisible(productItems().get(index), 10);
     }
 
-    private int getRandomProductIndex() {
+    public int getRandomProductIndex() {
         Random random = new Random();
         return random.nextInt(getProductsCount());
     }

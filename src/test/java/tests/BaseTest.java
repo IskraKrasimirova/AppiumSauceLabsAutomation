@@ -14,8 +14,6 @@ public abstract class BaseTest {
     public void setUp() {
 
         driver = DriverFactory.getDriver();
-        ((JavascriptExecutor) driver).executeScript("mobile: setOrientation",
-                ImmutableMap.of("orientation", "PORTRAIT"));
     }
 
     @AfterEach

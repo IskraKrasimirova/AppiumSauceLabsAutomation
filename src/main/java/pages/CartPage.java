@@ -94,11 +94,9 @@ public class CartPage extends BasePage {
     }
 
     public boolean isCartNotEmpty() {
-        try {
-            return cartHeader().isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
+        driverExt.waitUntilVisible(cartHeader());
+
+        return !cartItemTitles().isEmpty();
     }
 
     public boolean isAtCartPage() {

@@ -2,14 +2,17 @@ package pages;
 
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
 import java.util.Random;
 
 public class CatalogPage extends BasePage {
+    private final By productsHeaderLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/productTV");
+
     private WebElement productsHeader() {
-        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/productTV"));
+        return driver.findElement(productsHeaderLocator);
     }
 
     private WebElement productsList() {
@@ -41,7 +44,7 @@ public class CatalogPage extends BasePage {
     }
 
     public boolean isAtCatalogPage() {
-        driverExt.waitUntilVisible(productsHeader());
+        driverExt.waitUntilVisible(driver.findElement(productsHeaderLocator));
 
         return productsList().isDisplayed();
     }

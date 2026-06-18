@@ -252,7 +252,7 @@ public class GuestCartTests extends BaseTest {
         String price = cartPage.getItemPrice(0);
         Integer quantity = cartPage.getItemQuantity(0);
         String totalPrice = cartPage.getTotalPrice();
-        Integer itemsInCart = Integer.parseInt(cartPage.getNumberOfItemsInCart());
+        Integer itemsInCart = cartPage.getNumberOfItemsInCart();
 
         assertEquals(productQuantity, quantity);
         assertEquals(quantity, itemsInCart);

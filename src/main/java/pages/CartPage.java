@@ -144,7 +144,7 @@ public class CartPage extends BasePage {
         proceedToCheckoutButton().click();
     }
 
-    public String getNumberOfItemsInCart() {
-        return numberOfItemsText().getText().replace(" Items", "").trim();
+    public Integer getNumberOfItemsInCart() {
+        return Integer.parseInt( numberOfItemsText().getText().replaceAll("\\D+", ""));
     }
 }

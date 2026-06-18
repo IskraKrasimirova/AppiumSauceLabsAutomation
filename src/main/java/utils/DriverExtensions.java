@@ -1,6 +1,7 @@
 package utils;
 
 import io.appium.java_client.AppiumDriver;
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
@@ -35,6 +36,10 @@ public class DriverExtensions {
 
     public void waitUntilVisible(WebElement element, int timeoutSeconds) {
         createWait(timeoutSeconds).until(ExpectedConditions.visibilityOf(element));
+    }
+
+    public void waitUntilVisible(By locator) {
+        createWait().until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
     private WebDriverWait createWait(int timeoutSeconds) {

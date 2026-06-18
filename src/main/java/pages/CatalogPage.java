@@ -44,7 +44,7 @@ public class CatalogPage extends BasePage {
     }
 
     public boolean isAtCatalogPage() {
-        driverExt.waitUntilVisible(driver.findElement(productsHeaderLocator));
+        driverExt.waitUntilVisible(productsHeaderLocator);
 
         return productsList().isDisplayed();
     }

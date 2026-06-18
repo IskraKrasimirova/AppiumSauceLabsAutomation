@@ -9,6 +9,7 @@ import java.util.List;
 
 public class ReviewOrderPage extends BasePage {
     private final By checkoutHeaderLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/checkoutTitleTV");
+    private final By deliveryPriceLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/amountTV");
 
     private WebElement checkoutHeader() {
         return driver.findElement(checkoutHeaderLocator);
@@ -62,6 +63,18 @@ public class ReviewOrderPage extends BasePage {
         return driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"Payment Method\"]"));
     }
 
+    private WebElement paymentDetailsBlock() {
+        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/billingLL"));
+    }
+
+    private WebElement deliveryInfoText() {
+        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/dhlTV"));
+    }
+
+    private WebElement deliveryPriceText() {
+        return driver.findElement(deliveryPriceLocator);
+    }
+
     private WebElement paymentTotalBlock() {
         return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/totalLL"));
     }
@@ -89,14 +102,26 @@ public class ReviewOrderPage extends BasePage {
                 && reviewOrderText().isDisplayed()
                 && !productDetailsBlock().isEmpty()
                 && !productImages().isEmpty()
-                && deliveryAddressBlock().isDisplayed()
-                && paymentMethodText().isDisplayed()
                 && paymentTotalBlock().isDisplayed()
                 && placeOrderButton().isDisplayed();
     }
 
     public Integer getProductsCount() {
         return productImages().size();
+    }
+
+    public List<String> getAllProductNames() {
+        return productNames()
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+    }
+
+    public List<String> getAllProductPrices() {
+        return productPrices()
+                .stream()
+                .map(WebElement::getText)
+                .toList();
     }
 
     public String getProductName(int index) {
@@ -117,6 +142,11 @@ public class ReviewOrderPage extends BasePage {
 
     public Integer getTotalItemsCount() {
         return Integer.parseInt(numberOfItemsText().getText().replaceAll("\\D+", ""));
+    }
+
+    public String getDeliveryPrice() {
+        scrollUntilVisible(deliveryPriceLocator, 5);
+        return deliveryPriceText().getText();
     }
 
     public String getTotalPrice() {

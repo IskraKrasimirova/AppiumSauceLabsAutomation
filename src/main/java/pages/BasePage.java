@@ -40,4 +40,30 @@ public abstract class BasePage {
 
         throw new RuntimeException("Element not visible after scrolling: " + element);
     }
+
+    public void scrollUntilVisible(By locator, int maxScrolls) {
+        int scrollCount = 0;
+
+        while (scrollCount < maxScrolls) {
+            try {
+                WebElement element = driver.findElement(locator);
+                if (element.isDisplayed()) {
+                    return;
+                }
+            } catch (Exception ignored) {}
+
+            ((JavascriptExecutor) driver).executeScript("mobile: scrollGesture", ImmutableMap.of(
+                    "left", 100,
+                    "top", 200,
+                    "width", 800,
+                    "height", 1200,
+                    "direction", "down",
+                    "percent", 0.85
+            ));
+
+            scrollCount++;
+        }
+
+        throw new RuntimeException("Element not visible after scrolling: " + locator);
+    }
 }

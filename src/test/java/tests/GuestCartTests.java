@@ -1,6 +1,7 @@
 package tests;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pages.*;
 
@@ -10,11 +11,13 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Tag("guest")
+@Tag("cart")
 public class GuestCartTests extends BaseTest {
     private CatalogPage productsPage;
     private ProductDetailsPage productDetailsPage;
     private CartPage cartPage;
-    //private LoginPage loginPage;
+   // private LoginPage loginPage;
 
     @BeforeEach
     public void setUpPages() {
@@ -25,6 +28,7 @@ public class GuestCartTests extends BaseTest {
     }
 
     @Test
+    @Tag("smoke")
     public void guestCanAddProductToCart() {
         assertTrue(productsPage.isAtCatalogPage());
 
@@ -60,6 +64,7 @@ public class GuestCartTests extends BaseTest {
     }
 
     @Test
+    @Tag("regression")
     public void guestCanAddMultipleProductsToCart() {
         assertTrue(productsPage.isAtCatalogPage());
 
@@ -100,6 +105,7 @@ public class GuestCartTests extends BaseTest {
     }
 
     @Test
+    @Tag("regression")
     public void guestCanIncreaseAndDecreaseQuantityOfProductInCart() {
         assertTrue(productsPage.isAtCatalogPage());
 
@@ -136,6 +142,7 @@ public class GuestCartTests extends BaseTest {
     }
 
     @Test
+    @Tag("regression")
     public void guestCanRemoveItemFromCart() {
         assertTrue(productsPage.isAtCatalogPage());
 
@@ -157,6 +164,102 @@ public class GuestCartTests extends BaseTest {
 
         assertTrue(cartPage.isCartEmpty());
     }
+
+    @Test
+    @Tag("regression")
+    public void guestCanIncreaseQuantityFromProductDetailsPage() {
+        assertTrue(productsPage.isAtCatalogPage());
+
+        int index = productsPage.getRandomProductIndex();
+        productsPage.scrollToProduct(index);
+        productsPage.openProductDetails(index);
+        assertTrue(productDetailsPage.isAtProductDetailsPage());
+
+        BigDecimal price = parsePrice(productDetailsPage.getPrice());
+        int initialQty = productDetailsPage.getQuantity();
+        productDetailsPage.increaseQuantity();
+        int increasedQty = productDetailsPage.getQuantity();
+
+        assertEquals(initialQty + 1, increasedQty);
+
+        productDetailsPage.selectColor();
+        productDetailsPage.addToCart();
+        productDetailsPage.navBar().openCart();
+
+        assertTrue(cartPage.isCartNotEmpty());
+        assertEquals(increasedQty, cartPage.getItemQuantity(0));
+
+        BigDecimal expectedTotalPrice = price.multiply(BigDecimal.valueOf(increasedQty));
+        BigDecimal actualTotalPrice = parsePrice(cartPage.getTotalPrice());
+        assertEquals(expectedTotalPrice, actualTotalPrice);
+    }
+
+    @Test
+    @Tag("regression")
+    public void guestIsRedirectedToLoginWhenProceedingToCheckout() {
+        assertTrue(productsPage.isAtCatalogPage());
+
+        int index = productsPage.getRandomProductIndex();
+        productsPage.scrollToProduct(index);
+        productsPage.openProductDetails(index);
+        assertTrue(productDetailsPage.isAtProductDetailsPage());
+
+        productDetailsPage.selectColor();
+        productDetailsPage.addToCart();
+        productDetailsPage.navBar().openCart();
+
+        assertTrue(cartPage.isCartNotEmpty());
+
+        cartPage.proceedToCheckout();
+
+        LoginPage loginPage = new LoginPage(driver);
+        assertTrue(loginPage.isAtLoginPage());
+    }
+
+    @Test
+    @Tag("regression")
+    public void cartPersistsAfterLogin() {
+        assertTrue(productsPage.isAtCatalogPage());
+
+        int index = productsPage.getRandomProductIndex();
+        productsPage.scrollToProduct(index);
+        productsPage.openProductDetails(index);
+        assertTrue(productDetailsPage.isAtProductDetailsPage());
+
+        String productName = productDetailsPage.getTitle();
+        String productPrice = productDetailsPage.getPrice();
+        Integer productQuantity = productDetailsPage.getQuantity();
+        productDetailsPage.selectColor();
+        productDetailsPage.addToCart();
+        productDetailsPage.navBar().openCart();
+
+        assertTrue(cartPage.containsProduct(productName));
+
+        // Proceed to checkout → redirect to login
+        cartPage.proceedToCheckout();
+        LoginPage loginPage = new LoginPage(driver);
+        assertTrue(loginPage.isAtLoginPage());
+
+        loginPage.loginWithValidCredentials();
+
+        CheckoutPage checkoutPage = new CheckoutPage(driver);
+        assertTrue(checkoutPage.isAtCheckoutPage());
+        checkoutPage.navBar().openCart();
+
+        assertTrue(cartPage.isCartNotEmpty());
+        assertTrue(cartPage.containsProduct(productName));
+
+        String price = cartPage.getItemPrice(0);
+        Integer quantity = cartPage.getItemQuantity(0);
+        String totalPrice = cartPage.getTotalPrice();
+        Integer itemsInCart = Integer.parseInt(cartPage.getNumberOfItemsInCart());
+
+        assertEquals(productQuantity, quantity);
+        assertEquals(quantity, itemsInCart);
+        assertEquals(productPrice, price);
+        assertEquals(productPrice, totalPrice);
+    }
+
 
     private BigDecimal parsePrice(String price) {
         return new BigDecimal(price.replace("$ ", "").trim());

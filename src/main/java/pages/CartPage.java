@@ -77,7 +77,7 @@ public class CartPage extends BasePage {
         return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/totalPriceTV"));
     }
 
-    private WebElement ProceedToCheckoutButton() {
+    private WebElement proceedToCheckoutButton() {
         return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/cartBt"));
     }
 
@@ -85,7 +85,7 @@ public class CartPage extends BasePage {
         super(driver);
     }
 
-    public boolean isCartEmpty(){
+    public boolean isCartEmpty() {
         driverExt.waitUntilVisible(emptyCartHeader());
 
         return emptyCartImage().isDisplayed()
@@ -138,5 +138,13 @@ public class CartPage extends BasePage {
 
     public String getTotalPrice() {
         return totalPrice().getText();
+    }
+
+    public void proceedToCheckout() {
+        proceedToCheckoutButton().click();
+    }
+
+    public String getNumberOfItemsInCart() {
+        return numberOfItemsText().getText().replace(" Items", "").trim();
     }
 }

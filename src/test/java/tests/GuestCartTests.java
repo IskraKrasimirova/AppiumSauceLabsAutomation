@@ -31,7 +31,7 @@ public class GuestCartTests extends BaseTest {
     public void guestCanAddProductToCart() {
         assertTrue(catalogPage.isAtCatalogPage());
 
-        int index = getStableProductIndex(catalogPage.getProductsCount());
+        int index = getStableProductIndex();
         catalogPage.scrollToProduct(index);
         String productName = catalogPage.getProductName(index);
         String productPrice = catalogPage.getProductPrice(index);
@@ -116,7 +116,7 @@ public class GuestCartTests extends BaseTest {
     public void guestCanIncreaseAndDecreaseQuantityOfProductInCart() {
         assertTrue(catalogPage.isAtCatalogPage());
 
-        int index = getStableProductIndex(catalogPage.getProductsCount());
+        int index = getStableProductIndex();
         catalogPage.scrollToProduct(index);
         String itemName = catalogPage.getProductName(index);
         catalogPage.openProductDetails(index);
@@ -156,7 +156,7 @@ public class GuestCartTests extends BaseTest {
     public void guestCanRemoveItemFromCart() {
         assertTrue(catalogPage.isAtCatalogPage());
 
-        int index = getStableProductIndex(catalogPage.getProductsCount());
+        int index = getStableProductIndex();
         catalogPage.scrollToProduct(index);
         String itemName = catalogPage.getProductName(index);
         catalogPage.openProductDetails(index);
@@ -184,7 +184,7 @@ public class GuestCartTests extends BaseTest {
     public void guestCanIncreaseQuantityFromProductDetailsPage() {
         assertTrue(catalogPage.isAtCatalogPage());
 
-        int index = getStableProductIndex(catalogPage.getProductsCount());
+        int index = getStableProductIndex();
         catalogPage.scrollToProduct(index);
         String itemName = catalogPage.getProductName(index);
         catalogPage.openProductDetails(index);
@@ -216,7 +216,7 @@ public class GuestCartTests extends BaseTest {
     public void guestIsRedirectedToLoginWhenProceedingToCheckout() {
         assertTrue(catalogPage.isAtCatalogPage());
 
-        int index = getStableProductIndex(catalogPage.getProductsCount());
+        int index = getStableProductIndex();
         catalogPage.scrollToProduct(index);
         String itemName = catalogPage.getProductName(index);
         catalogPage.openProductDetails(index);
@@ -242,7 +242,7 @@ public class GuestCartTests extends BaseTest {
     public void cartPersistsAfterLogin() {
         assertTrue(catalogPage.isAtCatalogPage());
 
-        int index = getStableProductIndex(catalogPage.getProductsCount());
+        int index = getStableProductIndex();
         catalogPage.scrollToProduct(index);
         String itemName = catalogPage.getProductName(index);
         catalogPage.openProductDetails(index);

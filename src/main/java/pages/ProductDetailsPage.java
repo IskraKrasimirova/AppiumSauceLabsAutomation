@@ -97,18 +97,4 @@ public class ProductDetailsPage extends BasePage {
         int random = new Random().nextInt(colors.size());
         colors.get(random).click();
     }
-
-    public String getSelectedColor() {
-        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/colorTitleTV")).getText();
-    }
-
-    // ---------- Scroll support ----------
-
-   /* public void scrollToAddToCart() {
-        scrollUntilVisible(addToCartButton(), 10);
-    }
-
-    public void scrollToQuantity() {
-        scrollUntilVisible(quantityPlus(), 10);
-    }*/
 }

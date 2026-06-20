@@ -47,7 +47,7 @@ public class GuestCheckoutFlowTests extends BaseTest {
         // 1) Catalog
         assertTrue(catalogPage.isAtCatalogPage());
 
-        int index = getStableProductIndex(catalogPage.getProductsCount());
+        int index = getStableProductIndex();
         catalogPage.scrollToProduct(index);
 
         String expectedName = catalogPage.getProductName(index);

@@ -7,10 +7,6 @@ import org.openqa.selenium.WebElement;
 public class MenuComponent {
     private final AppiumDriver driver;
 
-    private WebElement menuButton() {
-        return driver.findElement(AppiumBy.accessibilityId("View menu"));
-    }
-
     private WebElement loginMenuItem() {
         return driver.findElement(AppiumBy.accessibilityId("Login Menu Item"));
     }

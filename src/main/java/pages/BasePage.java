@@ -3,7 +3,6 @@ package pages;
 import com.google.common.collect.ImmutableMap;
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import utils.DriverExtensions;
 
@@ -16,17 +15,6 @@ public abstract class BasePage {
         this.driverExt = new DriverExtensions(driver);
     }
 
-    public void scrollDown() {
-        ((JavascriptExecutor) driver).executeScript("mobile: swipeGesture", ImmutableMap.of(
-                "left", 100,
-                "top", 1200,
-                "width", 800,
-                "height", 800,
-                "direction", "up",
-                "percent", 0.50
-        ));
-    }
-
     public void scrollUntilVisible(WebElement element, int maxScrolls) {
         int scrollCount = 0;
 
@@ -35,7 +23,7 @@ public abstract class BasePage {
                 if (element.isDisplayed()) return;
             } catch (Exception ignored) {}
 
-            ((JavascriptExecutor) driver).executeScript("mobile: scrollGesture", ImmutableMap.of(
+            driver.executeScript("mobile: scrollGesture", ImmutableMap.of(
                     "left", 100,
                     "top", 300,
                     "width", 800,
@@ -59,7 +47,7 @@ public abstract class BasePage {
                 if (element.isDisplayed()) return;
             } catch (Exception ignored) {}
 
-            ((JavascriptExecutor) driver).executeScript("mobile: scrollGesture", ImmutableMap.of(
+            driver.executeScript("mobile: scrollGesture", ImmutableMap.of(
                     "left", 100,
                     "top", 300,
                     "width", 800,

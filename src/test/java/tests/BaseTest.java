@@ -1,11 +1,9 @@
 package tests;
 
-import com.google.common.collect.ImmutableMap;
 import drivers.DriverFactory;
 import io.appium.java_client.AppiumDriver;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.openqa.selenium.JavascriptExecutor;
 
 public abstract class BaseTest {
     protected AppiumDriver driver;

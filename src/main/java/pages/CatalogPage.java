@@ -6,15 +6,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
-import java.util.Random;
 
 public class CatalogPage extends BasePage {
     private final By productsHeaderLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/productTV");
-    private final By productContainerLocator = AppiumBy.xpath("//android.view.ViewGroup[.//android.widget.TextView[@resource-id='com.saucelabs.mydemoapp.android:id/titleTV']]");
-    private final By productTitleLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/titleTV");
-    private final By productPriceLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/priceTV");
-    private final By productImageLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/productIV");
-//    private final By productRatingLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/rattingV");
 
     private WebElement productsHeader() {
         return driver.findElement(productsHeaderLocator);
@@ -50,10 +44,6 @@ public class CatalogPage extends BasePage {
         return productsHeader().isDisplayed() && productsList().isDisplayed();
     }
 
-    public int getProductsCount() {
-        return productImages().size();
-    }
-
     public String getProductName(int index) {
         return productTitles().get(index).getText();
     }
@@ -66,10 +56,6 @@ public class CatalogPage extends BasePage {
         WebElement image = productImages().get(index);
         driverExt.waitUntilClickable(image);
         image.click();
-    }
-
-    public int getRandomProductIndex() {
-        return new Random().nextInt(getProductsCount());
     }
 
     public void scrollToProduct(int index) {

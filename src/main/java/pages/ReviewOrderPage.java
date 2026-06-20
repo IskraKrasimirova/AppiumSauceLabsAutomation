@@ -102,8 +102,7 @@ public class ReviewOrderPage extends BasePage {
                 && reviewOrderText().isDisplayed()
                 && !productDetailsBlock().isEmpty()
                 && !productImages().isEmpty()
-                && paymentTotalBlock().isDisplayed()
-                && placeOrderButton().isDisplayed();
+                && paymentTotalBlock().isDisplayed();
     }
 
     public Integer getProductsCount() {

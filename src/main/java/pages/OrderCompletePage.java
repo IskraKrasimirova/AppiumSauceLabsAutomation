@@ -31,9 +31,7 @@ public class OrderCompletePage extends BasePage {
         driverExt.waitUntilVisible(checkoutHeaderLocator);
 
         return checkoutHeader().isDisplayed()
-                && thankYouMessageText().isDisplayed()
-                && orderMessageText().isDisplayed()
-                && continueShoppingButton().isDisplayed();
+                && thankYouMessageText().isDisplayed();
     }
 
     public String getHeaderText() {

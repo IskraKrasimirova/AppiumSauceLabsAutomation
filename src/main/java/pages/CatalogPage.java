@@ -10,6 +10,11 @@ import java.util.Random;
 
 public class CatalogPage extends BasePage {
     private final By productsHeaderLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/productTV");
+    private final By productContainerLocator = AppiumBy.xpath("//android.view.ViewGroup[.//android.widget.TextView[@resource-id='com.saucelabs.mydemoapp.android:id/titleTV']]");
+    private final By productTitleLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/titleTV");
+    private final By productPriceLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/priceTV");
+    private final By productImageLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/productIV");
+//    private final By productRatingLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/rattingV");
 
     private WebElement productsHeader() {
         return driver.findElement(productsHeaderLocator);
@@ -19,7 +24,7 @@ public class CatalogPage extends BasePage {
         return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/productRV"));
     }
 
-    private List<WebElement> productItems() {
+    private List<WebElement> productImages() {
         return driver.findElements(AppiumBy.id("com.saucelabs.mydemoapp.android:id/productIV"));
     }
 
@@ -29,10 +34,6 @@ public class CatalogPage extends BasePage {
 
     private List<WebElement> productPrices() {
         return driver.findElements(AppiumBy.id("com.saucelabs.mydemoapp.android:id/priceTV"));
-    }
-
-    private List<WebElement> productRatings() {
-        return driver.findElements(AppiumBy.id("com.saucelabs.mydemoapp.android:id/rattingV"));
     }
 
     public CatalogPage(AppiumDriver driver) {
@@ -46,11 +47,11 @@ public class CatalogPage extends BasePage {
     public boolean isAtCatalogPage() {
         driverExt.waitUntilVisible(productsHeaderLocator);
 
-        return productsList().isDisplayed();
+        return productsHeader().isDisplayed() && productsList().isDisplayed();
     }
 
     public int getProductsCount() {
-        return productItems().size();
+        return productImages().size();
     }
 
     public String getProductName(int index) {
@@ -62,20 +63,16 @@ public class CatalogPage extends BasePage {
     }
 
     public void openProductDetails(int index) {
-        productItems().get(index).click();
-    }
-
-    public String getRandomProductName() {
-        int index = getRandomProductIndex();
-        return getProductName(index);
-    }
-
-    public void scrollToProduct(int index) {
-        scrollUntilVisible(productItems().get(index), 10);
+        WebElement image = productImages().get(index);
+        driverExt.waitUntilClickable(image);
+        image.click();
     }
 
     public int getRandomProductIndex() {
-        Random random = new Random();
-        return random.nextInt(getProductsCount());
+        return new Random().nextInt(getProductsCount());
+    }
+
+    public void scrollToProduct(int index) {
+        scrollUntilVisible(productImages().get(index), 10);
     }
 }

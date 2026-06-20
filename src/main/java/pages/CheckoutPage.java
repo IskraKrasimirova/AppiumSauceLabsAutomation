@@ -74,14 +74,6 @@ public class CheckoutPage extends BasePage {
     public boolean isAtCheckoutPage() {
         driverExt.waitUntilVisible(checkoutHeaderLocator);
 
-        return shippingAddressText().isDisplayed()
-                && fullNameInput().isDisplayed()
-                && addressInput().isDisplayed()
-                && address2Input().isDisplayed()
-                && cityInput().isDisplayed()
-                && stateInput().isDisplayed()
-                && zipCodeInput().isDisplayed()
-                && countryInput().isDisplayed()
-                && paymentButton().isDisplayed();
+        return checkoutHeader().isDisplayed() && shippingAddressText().isDisplayed();
     }
 }

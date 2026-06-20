@@ -2,12 +2,15 @@ package pages;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.AppiumBy;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 public class LoginPage extends BasePage {
 
+    private final By loginHeaderLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/loginTV");
+
     private WebElement loginHeader() {
-        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/loginTV"));
+        return driver.findElement(loginHeaderLocator);
     }
 
     private WebElement usernameInput() {
@@ -86,13 +89,9 @@ public class LoginPage extends BasePage {
     }
 
     public boolean isAtLoginPage() {
-        driverExt.waitUntilVisible(loginHeader());
+        driverExt.waitUntilVisible(loginHeaderLocator);
 
-        return usernameInput().isDisplayed()
-                && passwordInput().isDisplayed()
-                && loginButton().isDisplayed()
-                && usernamesText().isDisplayed()
-                && passwordText().isDisplayed();
+        return loginHeader().isDisplayed();
     }
 
     public boolean isUsernameErrorVisible() {

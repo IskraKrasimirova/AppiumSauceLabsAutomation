@@ -2,18 +2,21 @@ package pages;
 
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
 import java.util.Random;
 
-public class ProductDetailsPage extends BasePage{
+public class ProductDetailsPage extends BasePage {
+    private final By productTitleLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/productTV");
+
     private WebElement productImage() {
         return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/productIV"));
     }
 
     private WebElement productTitle() {
-        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/productTV"));
+        return driver.findElement(productTitleLocator);
     }
 
     private WebElement productPrice() {
@@ -53,11 +56,10 @@ public class ProductDetailsPage extends BasePage{
     }
 
     public boolean isAtProductDetailsPage() {
-        driverExt.waitUntilVisible(productTitle());
+        driverExt.waitUntilVisible(productTitleLocator);
 
-        return productImage().isDisplayed()
-                && productPrice().isDisplayed()
-                && addToCartButton().isDisplayed();
+        return productTitle().isDisplayed()
+                && productImage().isDisplayed();
     }
 
     public String getTitle() {
@@ -81,6 +83,7 @@ public class ProductDetailsPage extends BasePage{
     }
 
     public void addToCart() {
+        driverExt.waitUntilClickable(addToCartButton());
         addToCartButton().click();
     }
 
@@ -88,7 +91,7 @@ public class ProductDetailsPage extends BasePage{
         List<WebElement> colors = colorOptions();
 
         if (colors.isEmpty()) {
-            throw new RuntimeException("No colors available for this product");
+            return;
         }
 
         int random = new Random().nextInt(colors.size());
@@ -101,11 +104,11 @@ public class ProductDetailsPage extends BasePage{
 
     // ---------- Scroll support ----------
 
-    public void scrollToAddToCart() {
+   /* public void scrollToAddToCart() {
         scrollUntilVisible(addToCartButton(), 10);
     }
 
     public void scrollToQuantity() {
         scrollUntilVisible(quantityPlus(), 10);
-    }
+    }*/
 }

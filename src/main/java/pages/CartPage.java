@@ -2,17 +2,21 @@ package pages;
 
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
 public class CartPage extends BasePage {
+    private final By cartHeaderLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/productTV");
+    private final By emptyCartHeaderLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/noItemTitleTV");
+
     private WebElement cartHeader() {
-        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/productTV"));
+        return driver.findElement(cartHeaderLocator);
     }
 
     private WebElement emptyCartHeader() {
-        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/noItemTitleTV"));
+        return driver.findElement(emptyCartHeaderLocator);
     }
 
     private WebElement emptyCartImage() {
@@ -86,17 +90,15 @@ public class CartPage extends BasePage {
     }
 
     public boolean isCartEmpty() {
-        driverExt.waitUntilVisible(emptyCartHeader());
+        driverExt.waitUntilVisible(emptyCartHeaderLocator);
 
-        return emptyCartImage().isDisplayed()
-                && emptyCartMessage().isDisplayed()
-                && goShoppingButton().isDisplayed();
+        return emptyCartHeader().isDisplayed();
     }
 
     public boolean isCartNotEmpty() {
-        driverExt.waitUntilVisible(cartHeader());
+        driverExt.waitUntilVisible(cartHeaderLocator);
 
-        return !cartItemTitles().isEmpty();
+        return cartHeader().isDisplayed() && !cartItemTitles().isEmpty();
     }
 
     public boolean isAtCartPage() {

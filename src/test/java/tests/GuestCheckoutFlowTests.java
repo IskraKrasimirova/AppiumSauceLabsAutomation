@@ -44,14 +44,20 @@ public class GuestCheckoutFlowTests extends BaseTest {
     public void guestCanCompleteFullCheckoutFlow() {
         // 1) Catalog
         assertTrue(catalogPage.isAtCatalogPage());
+
         int index = catalogPage.getRandomProductIndex();
         catalogPage.scrollToProduct(index);
+
         String expectedName = catalogPage.getProductName(index);
         String expectedPrice = catalogPage.getProductPrice(index);
+
         catalogPage.openProductDetails(index);
 
         // 2) Product Details
         assertTrue(productDetailsPage.isAtProductDetailsPage());
+        assertEquals(expectedName, productDetailsPage.getTitle());
+        assertEquals(expectedPrice, productDetailsPage.getPrice());
+
         productDetailsPage.selectColor();
         productDetailsPage.addToCart();
         productDetailsPage.navBar().openCart();
@@ -99,9 +105,9 @@ public class GuestCheckoutFlowTests extends BaseTest {
         // 1) Catalog
         assertTrue(catalogPage.isAtCatalogPage());
 
-        int total = catalogPage.getProductsCount();
+        int totalItems = catalogPage.getProductsCount();
         int first = catalogPage.getRandomProductIndex();
-        int second = (first + 1) % total;
+        int second = (first + 1) % totalItems;
 
         // --- First product ---
         catalogPage.scrollToProduct(first);
@@ -110,6 +116,8 @@ public class GuestCheckoutFlowTests extends BaseTest {
         catalogPage.openProductDetails(first);
 
         assertTrue(productDetailsPage.isAtProductDetailsPage());
+        assertEquals(firstName, productDetailsPage.getTitle());
+
         productDetailsPage.selectColor();
         productDetailsPage.addToCart();
         productDetailsPage.navBar().openMenu();
@@ -126,6 +134,8 @@ public class GuestCheckoutFlowTests extends BaseTest {
         catalogPage.openProductDetails(second);
 
         assertTrue(productDetailsPage.isAtProductDetailsPage());
+        assertEquals(secondName, productDetailsPage.getTitle());
+
         productDetailsPage.selectColor();
         productDetailsPage.addToCart();
         productDetailsPage.navBar().openCart();
@@ -160,6 +170,9 @@ public class GuestCheckoutFlowTests extends BaseTest {
         // Validate both products
         assertTrue(reviewOrderPage.getAllProductNames().contains(firstName));
         assertTrue(reviewOrderPage.getAllProductNames().contains(secondName));
+        assertTrue(reviewOrderPage.getAllProductPrices().contains(firstPrice));
+        assertTrue(reviewOrderPage.getAllProductPrices().contains(secondPrice));
+
 
         // Validate total price
         BigDecimal deliveryPrice = parsePrice(reviewOrderPage.getDeliveryPrice());

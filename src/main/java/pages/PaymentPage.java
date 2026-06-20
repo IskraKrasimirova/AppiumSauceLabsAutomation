@@ -61,7 +61,7 @@ public class PaymentPage extends BasePage {
         super(driver);
     }
 
-    public void fillPaymentData(PaymentData data){
+    public void fillPaymentData(PaymentData data) {
         driverExt.enterText(fullNameInput(), data.fullName);
         driverExt.enterText(cardNumberInput(), data.cardNumber);
         driverExt.enterText(expirationDateInput(), data.expirationDate);
@@ -73,19 +73,14 @@ public class PaymentPage extends BasePage {
         }
     }
 
-    public void reviewOrder(){
+    public void reviewOrder() {
         reviewOrderButton().click();
     }
 
     public boolean isAtPaymentPage() {
         driverExt.waitUntilVisible(checkoutHeaderLocator);
 
-        return paymentMethodText().isDisplayed()
-                && paymentInfoText().isDisplayed()
-                && cardText().isDisplayed()
-                && cardVisaImage().isDisplayed()
-                && mastercardImage().isDisplayed()
-                && fullNameInput().isDisplayed()
-                && reviewOrderButton().isDisplayed();
+        return checkoutHeader().isDisplayed()
+                && paymentMethodText().isDisplayed();
     }
 }

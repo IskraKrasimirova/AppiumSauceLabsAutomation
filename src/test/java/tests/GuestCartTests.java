@@ -6,11 +6,11 @@ import org.junit.jupiter.api.Test;
 import pages.*;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static utils.PriceUtils.parsePrice;
+import static utils.ProductSelectionHelper.getStableProductIndex;
+import static utils.ProductSelectionHelper.getTwoStableProductIndices;
 
 @Tag("guest")
 @Tag("cart")
@@ -31,7 +31,7 @@ public class GuestCartTests extends BaseTest {
     public void guestCanAddProductToCart() {
         assertTrue(catalogPage.isAtCatalogPage());
 
-        int index = catalogPage.getRandomProductIndex();
+        int index = getStableProductIndex(catalogPage.getProductsCount());
         catalogPage.scrollToProduct(index);
         String productName = catalogPage.getProductName(index);
         String productPrice = catalogPage.getProductPrice(index);
@@ -67,9 +67,9 @@ public class GuestCartTests extends BaseTest {
     public void guestCanAddMultipleProductsToCart() {
         assertTrue(catalogPage.isAtCatalogPage());
 
-        int totalItems = catalogPage.getProductsCount();
-        int first = new Random().nextInt(totalItems);
-        int second = (first + 1) % totalItems;
+        int[] indices = getTwoStableProductIndices();
+        int first = indices[0];
+        int second = indices[1];
 
         // First product
         catalogPage.scrollToProduct(first);
@@ -116,7 +116,7 @@ public class GuestCartTests extends BaseTest {
     public void guestCanIncreaseAndDecreaseQuantityOfProductInCart() {
         assertTrue(catalogPage.isAtCatalogPage());
 
-        int index = catalogPage.getRandomProductIndex();
+        int index = getStableProductIndex(catalogPage.getProductsCount());
         catalogPage.scrollToProduct(index);
         String itemName = catalogPage.getProductName(index);
         catalogPage.openProductDetails(index);
@@ -156,7 +156,7 @@ public class GuestCartTests extends BaseTest {
     public void guestCanRemoveItemFromCart() {
         assertTrue(catalogPage.isAtCatalogPage());
 
-        int index = catalogPage.getRandomProductIndex();
+        int index = getStableProductIndex(catalogPage.getProductsCount());
         catalogPage.scrollToProduct(index);
         String itemName = catalogPage.getProductName(index);
         catalogPage.openProductDetails(index);
@@ -184,7 +184,7 @@ public class GuestCartTests extends BaseTest {
     public void guestCanIncreaseQuantityFromProductDetailsPage() {
         assertTrue(catalogPage.isAtCatalogPage());
 
-        int index = catalogPage.getRandomProductIndex();
+        int index = getStableProductIndex(catalogPage.getProductsCount());
         catalogPage.scrollToProduct(index);
         String itemName = catalogPage.getProductName(index);
         catalogPage.openProductDetails(index);
@@ -216,7 +216,7 @@ public class GuestCartTests extends BaseTest {
     public void guestIsRedirectedToLoginWhenProceedingToCheckout() {
         assertTrue(catalogPage.isAtCatalogPage());
 
-        int index = catalogPage.getRandomProductIndex();
+        int index = getStableProductIndex(catalogPage.getProductsCount());
         catalogPage.scrollToProduct(index);
         String itemName = catalogPage.getProductName(index);
         catalogPage.openProductDetails(index);
@@ -242,7 +242,7 @@ public class GuestCartTests extends BaseTest {
     public void cartPersistsAfterLogin() {
         assertTrue(catalogPage.isAtCatalogPage());
 
-        int index = catalogPage.getRandomProductIndex();
+        int index = getStableProductIndex(catalogPage.getProductsCount());
         catalogPage.scrollToProduct(index);
         String itemName = catalogPage.getProductName(index);
         catalogPage.openProductDetails(index);

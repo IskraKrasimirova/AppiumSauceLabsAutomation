@@ -14,6 +14,8 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static utils.PriceUtils.parsePrice;
+import static utils.ProductSelectionHelper.getStableProductIndex;
+import static utils.ProductSelectionHelper.getTwoStableProductIndices;
 
 @Tag("e2e")
 @Tag("guest")
@@ -45,7 +47,7 @@ public class GuestCheckoutFlowTests extends BaseTest {
         // 1) Catalog
         assertTrue(catalogPage.isAtCatalogPage());
 
-        int index = catalogPage.getRandomProductIndex();
+        int index = getStableProductIndex(catalogPage.getProductsCount());
         catalogPage.scrollToProduct(index);
 
         String expectedName = catalogPage.getProductName(index);
@@ -105,9 +107,9 @@ public class GuestCheckoutFlowTests extends BaseTest {
         // 1) Catalog
         assertTrue(catalogPage.isAtCatalogPage());
 
-        int totalItems = catalogPage.getProductsCount();
-        int first = catalogPage.getRandomProductIndex();
-        int second = (first + 1) % totalItems;
+        int[] indices = getTwoStableProductIndices();
+        int first = indices[0];
+        int second = indices[1];
 
         // --- First product ---
         catalogPage.scrollToProduct(first);

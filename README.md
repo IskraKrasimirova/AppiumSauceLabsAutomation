@@ -34,7 +34,7 @@ The suite includes:
 
 - **Java 17**
 - **Maven**
-- **Appium 2.x**
+- **Appium 3.x**
 - **JUnit 5**
 - **Selenium WebDriver**
 - **Page Object Model (POM)**
@@ -96,37 +96,38 @@ mvn clean test
 ---
 
 ## ⚠️ Known Issues in MyDemoApp (Important)
+During testing, two reproducible crashes were identified in the Product Catalog screen.
+These issues originate from the application itself and are not related to the automation framework.
+---
 
-During testing, several **critical defects** were identified in the MyDemoApp product catalog.  
-These issues are reproducible both manually and via automation and originate from the application itself.
+### ❗ 1. The product at index 1 (e.g., “Sauce Labs Backpack (green)”) crashes the app
+- Caused by an intentionally introduced null value in the app’s internal meta[] array
+- Tapping this product triggers a NullPointerException
+- The product cannot be opened and is untestable
 
 ---
 
-### ❗ 1. The product **“Sauce Labs Backpack (green)”** crashes the app
-- Reproducible manually and through automated tests
-- Opening this product immediately closes the application
-- This makes the product **untestable**
-- The crash occurs consistently across emulator restarts and Appium sessions
+### ❗ 2. Products after scrolling may also crash (index > 5)
+The catalog contains more items than the hardcoded meta[] array (size 6).
+When tapping a product with index greater than 5, the app attempts to access an invalid array position, resulting in:
+- ArrayIndexOutOfBoundsException
+- Immediate application closure
 
 ---
 
-### ❗ 2. Additional products may crash when scrolling further down the catalog
-Although the catalog contains more than 4 products, only the first four are visible without scrolling.  
-When scrolling down, some items exhibit defects such as:
+### 🔍 Logcat Evidence
+Both crashes are clearly visible in **Logcat**, showing stack traces such as:
 
-- Missing or invalid image resources
-- Missing color options
-- Missing or incorrect layout IDs
-- Null or invalid product data
+- `NullPointerException` when opening the product at index **1**
+- `ArrayIndexOutOfBoundsException` when opening products with index **> 5** after scrolling
 
-Opening these items causes the application to close unexpectedly.
+These logs confirm that the issues originate from the hardcoded `meta[]` array inside `ProductCatalogFragment`.
 
 ---
 
 ### Summary
-These issues are **limitations of the MyDemoApp demo application** and not related to the automation framework.  
-The test suite includes logic to avoid unstable products and ensure consistent, repeatable execution.
-
+These crashes are caused by the hardcoded meta[] array inside ProductCatalogFragment and are part of the demo behavior of MyDemoApp.
+The automation suite avoids unstable product indices to ensure consistent, repeatable execution.
 ---
 
 ## 🔧 Future Improvements

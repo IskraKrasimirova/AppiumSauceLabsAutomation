@@ -138,9 +138,3 @@ The automation suite avoids unstable product indices to ensure consistent, repea
 - Add API mocks for checkout flow
 - Add visual regression tests
 
-- **Integrate ExtentReports for HTML reporting**
-    - Add Maven dependency
-    - Implement `ExtentManager` and `ExtentTestListener`
-    - Generate an HTML report after each test run
-    - Attach screenshots on failure
-    - Include device/emulator information in the report  

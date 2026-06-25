@@ -12,63 +12,63 @@ import static utils.PriceUtils.parsePrice;
 import static utils.ProductSelectionHelper.getStableProductIndex;
 import static utils.ProductSelectionHelper.getTwoStableProductIndices;
 
-@Tag("guest")
+@Tag("loggedIn")
 @Tag("cart")
-public class GuestCartTests extends BaseTest {
+public class LoggedInUserCartTests extends BaseTest {
     private CatalogPage catalogPage;
     private ProductDetailsPage productDetailsPage;
     private CartPage cartPage;
+    private LoginPage loginPage;
 
     @BeforeEach
-    public void setUpPages() {
+    public void setUp() {
         catalogPage = new CatalogPage(driver);
         productDetailsPage = new ProductDetailsPage(driver);
         cartPage = new CartPage(driver);
+        loginPage = new LoginPage(driver);
+
+        // Login first
+        assertTrue(catalogPage.isAtCatalogPage());
+        catalogPage.navBar().openMenu();
+        catalogPage.navBar().menu().openLogin();
+
+        assertTrue(loginPage.isAtLoginPage());
+        loginPage.loginWithValidCredentials();
+
+        assertTrue(catalogPage.isAtCatalogPage());
     }
 
     @Test
     @Tag("smoke")
-    public void guestCanAddProductToCart() {
-        assertTrue(catalogPage.isAtCatalogPage());
-
+    public void loggedInUserCanAddProductToCart() {
         int index = getStableProductIndex();
         catalogPage.scrollToProduct(index);
-        String productName = catalogPage.getProductName(index);
-        String productPrice = catalogPage.getProductPrice(index);
+
+        String expectedName = catalogPage.getProductName(index);
+        String expectedPrice = catalogPage.getProductPrice(index);
+
         catalogPage.openProductDetails(index);
 
         assertTrue(productDetailsPage.isAtProductDetailsPage());
-        String name = productDetailsPage.getTitle();
-        String price = productDetailsPage.getPrice();
-        Integer quantity = productDetailsPage.getQuantity();
-
-        assertEquals(name, productName);
-        assertEquals(price, productPrice);
+        assertEquals(expectedName, productDetailsPage.getTitle());
+        assertEquals(expectedPrice, productDetailsPage.getPrice());
 
         productDetailsPage.selectColor();
         productDetailsPage.addToCart();
         productDetailsPage.navBar().openCart();
 
         assertTrue(cartPage.isCartNotEmpty());
-
-        String cartProductName = cartPage.getItemName(0);
-        String cartProductPrice = cartPage.getItemPrice(0);
-        Integer cartProductQuantity = cartPage.getItemQuantity(0);
-        String totalPrice = cartPage.getTotalPrice();
-
         assertAll("Cart item validation",
-                () -> assertEquals(name, cartProductName),
-                () -> assertEquals(price, cartProductPrice),
-                () -> assertEquals(quantity, cartProductQuantity),
-                () -> assertEquals(price, totalPrice)
+                () -> assertEquals(expectedName, cartPage.getItemName(0)),
+                () -> assertEquals(expectedPrice, cartPage.getItemPrice(0)),
+                () -> assertEquals(1, cartPage.getItemQuantity(0)),
+                () -> assertEquals(expectedPrice, cartPage.getTotalPrice())
         );
     }
 
     @Test
     @Tag("regression")
-    public void guestCanAddMultipleProductsToCart() {
-        assertTrue(catalogPage.isAtCatalogPage());
-
+    public void loggedInUserCanAddMultipleProductsToCart() {
         int[] indices = getTwoStableProductIndices();
         int first = indices[0];
         int second = indices[1];
@@ -109,7 +109,6 @@ public class GuestCartTests extends BaseTest {
                 () -> assertTrue(cartPage.containsProduct(secondName))
         );
 
-
         BigDecimal cartTotalPrice = parsePrice(cartPage.getTotalPrice());
         BigDecimal expectedTotalPrice = parsePrice(firstPrice).add(parsePrice(secondPrice));
 
@@ -118,9 +117,7 @@ public class GuestCartTests extends BaseTest {
 
     @Test
     @Tag("regression")
-    public void guestCanIncreaseAndDecreaseQuantityOfProductInCart() {
-        assertTrue(catalogPage.isAtCatalogPage());
-
+    public void loggedInUserCanIncreaseAndDecreaseQuantityOfProductInCart() {
         int index = getStableProductIndex();
         catalogPage.scrollToProduct(index);
         String itemName = catalogPage.getProductName(index);
@@ -158,9 +155,7 @@ public class GuestCartTests extends BaseTest {
 
     @Test
     @Tag("regression")
-    public void guestCanRemoveItemFromCart() {
-        assertTrue(catalogPage.isAtCatalogPage());
-
+    public void loggedInUserCanRemoveItemFromCart() {
         int index = getStableProductIndex();
         catalogPage.scrollToProduct(index);
         String itemName = catalogPage.getProductName(index);
@@ -186,9 +181,7 @@ public class GuestCartTests extends BaseTest {
 
     @Test
     @Tag("regression")
-    public void guestCanIncreaseQuantityFromProductDetailsPage() {
-        assertTrue(catalogPage.isAtCatalogPage());
-
+    public void loggedInUserCanIncreaseQuantityFromProductDetailsPage() {
         int index = getStableProductIndex();
         catalogPage.scrollToProduct(index);
         String itemName = catalogPage.getProductName(index);
@@ -199,14 +192,13 @@ public class GuestCartTests extends BaseTest {
 
         BigDecimal price = parsePrice(productDetailsPage.getPrice());
         int initialQty = productDetailsPage.getQuantity();
-        // Increase 4 times
-        productDetailsPage.increaseQuantity();
+        // Increase 3 times
         productDetailsPage.increaseQuantity();
         productDetailsPage.increaseQuantity();
         productDetailsPage.increaseQuantity();
 
         int increasedQty = productDetailsPage.getQuantity();
-        assertEquals(initialQty + 4, increasedQty);
+        assertEquals(initialQty + 3, increasedQty);
 
         productDetailsPage.selectColor();
         productDetailsPage.addToCart();
@@ -225,11 +217,10 @@ public class GuestCartTests extends BaseTest {
 
     @Test
     @Tag("regression")
-    public void guestIsRedirectedToLoginWhenProceedingToCheckout() {
-        assertTrue(catalogPage.isAtCatalogPage());
-
+    public void loggedInUserCartPersistsAcrossPages() {
         int index = getStableProductIndex();
         catalogPage.scrollToProduct(index);
+
         String itemName = catalogPage.getProductName(index);
         catalogPage.openProductDetails(index);
 
@@ -238,64 +229,15 @@ public class GuestCartTests extends BaseTest {
 
         productDetailsPage.selectColor();
         productDetailsPage.addToCart();
-        productDetailsPage.navBar().openCart();
+
+        // Navigate around
+        productDetailsPage.navBar().openMenu();
+        new MenuComponent(driver).openCatalog();
+        assertTrue(catalogPage.isAtCatalogPage());
+
+        catalogPage.navBar().openCart();
 
         assertTrue(cartPage.isCartNotEmpty());
         assertTrue(cartPage.containsProduct(itemName));
-
-        cartPage.proceedToCheckout();
-
-        LoginPage loginPage = new LoginPage(driver);
-        assertTrue(loginPage.isAtLoginPage());
-    }
-
-    @Test
-    @Tag("regression")
-    public void cartPersistsAfterLogin() {
-        assertTrue(catalogPage.isAtCatalogPage());
-
-        int index = getStableProductIndex();
-        catalogPage.scrollToProduct(index);
-        String itemName = catalogPage.getProductName(index);
-        catalogPage.openProductDetails(index);
-        assertTrue(productDetailsPage.isAtProductDetailsPage());
-
-        String productName = productDetailsPage.getTitle();
-        assertEquals(itemName, productName);
-
-        String productPrice = productDetailsPage.getPrice();
-        Integer productQuantity = productDetailsPage.getQuantity();
-        productDetailsPage.selectColor();
-        productDetailsPage.addToCart();
-        productDetailsPage.navBar().openCart();
-
-        assertTrue(cartPage.isCartNotEmpty());
-        assertTrue(cartPage.containsProduct(productName));
-
-        // Proceed to checkout → redirect to login
-        cartPage.proceedToCheckout();
-        LoginPage loginPage = new LoginPage(driver);
-        assertTrue(loginPage.isAtLoginPage());
-
-        loginPage.loginWithValidCredentials();
-
-        CheckoutPage checkoutPage = new CheckoutPage(driver);
-        assertTrue(checkoutPage.isAtCheckoutPage());
-        checkoutPage.navBar().openCart();
-
-        assertTrue(cartPage.isCartNotEmpty());
-        assertTrue(cartPage.containsProduct(productName));
-
-        String price = cartPage.getItemPrice(0);
-        Integer quantity = cartPage.getItemQuantity(0);
-        String totalPrice = cartPage.getTotalPrice();
-        Integer itemsInCart = cartPage.getNumberOfItemsInCart();
-
-        assertAll("Cart validation",
-                () -> assertEquals(productQuantity, quantity),
-                () -> assertEquals(quantity, itemsInCart),
-                () -> assertEquals(productPrice, price),
-                () -> assertEquals(productPrice, totalPrice)
-        );
     }
 }

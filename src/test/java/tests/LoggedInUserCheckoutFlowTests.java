@@ -17,32 +17,42 @@ import static utils.ProductSelectionHelper.getStableProductIndex;
 import static utils.ProductSelectionHelper.getTwoStableProductIndices;
 
 @Tag("e2e")
-@Tag("guest")
-public class GuestCheckoutFlowTests extends BaseTest {
+@Tag("loggedIn")
+public class LoggedInUserCheckoutFlowTests extends BaseTest{
     private CatalogPage catalogPage;
     private ProductDetailsPage productDetailsPage;
     private CartPage cartPage;
-    private LoginPage loginPage;
     private CheckoutPage checkoutPage;
     private PaymentPage paymentPage;
     private ReviewOrderPage reviewOrderPage;
     private OrderCompletePage orderCompletePage;
+    private LoginPage loginPage;
 
     @BeforeEach
     public void setUpPages() {
         catalogPage = new CatalogPage(driver);
         productDetailsPage = new ProductDetailsPage(driver);
         cartPage = new CartPage(driver);
-        loginPage = new LoginPage(driver);
         checkoutPage = new CheckoutPage(driver);
         paymentPage = new PaymentPage(driver);
         reviewOrderPage = new ReviewOrderPage(driver);
         orderCompletePage = new OrderCompletePage(driver);
+        loginPage = new LoginPage(driver);
+
+        // Login first
+        assertTrue(catalogPage.isAtCatalogPage());
+        catalogPage.navBar().openMenu();
+        catalogPage.navBar().menu().openLogin();
+
+        assertTrue(loginPage.isAtLoginPage());
+        loginPage.loginWithValidCredentials();
+
+        assertTrue(catalogPage.isAtCatalogPage());
     }
 
     @Test
     @Tag("regression")
-    public void guestCanCompleteFullCheckoutFlow() {
+    public void loggedInUserCanCompleteFullCheckoutFlow() {
         // 1) Catalog
         assertTrue(catalogPage.isAtCatalogPage());
 
@@ -68,24 +78,21 @@ public class GuestCheckoutFlowTests extends BaseTest {
         assertTrue(cartPage.containsProduct(expectedName));
         assertEquals(expectedPrice, cartPage.getItemPrice(0));
 
-        // 4) Proceed → Login
+        // 4) Checkout Page (NO redirect to login)
         cartPage.proceedToCheckout();
-        assertTrue(loginPage.isAtLoginPage());
-        loginPage.loginWithValidCredentials();
-
-        // 5) Checkout Page
         assertTrue(checkoutPage.isAtCheckoutPage());
+
         CheckoutData checkoutData = CheckoutDataFactory.createValidCheckoutData();
         checkoutPage.fillShippingAddress(checkoutData);
         checkoutPage.goToPayment();
 
-        // 6) Payment Page
+        // 5) Payment Page
         assertTrue(paymentPage.isAtPaymentPage());
         PaymentData paymentData = PaymentDataFactory.createValidPaymentData();
         paymentPage.fillPaymentData(paymentData);
         paymentPage.reviewOrder();
 
-        // 7) Review Order Page
+        // 6) Review Order Page
         assertTrue(reviewOrderPage.isAtReviewOrderPage());
         assertAll("Review order validation",
                 () -> assertEquals(1, reviewOrderPage.getProductsCount()),
@@ -95,7 +102,7 @@ public class GuestCheckoutFlowTests extends BaseTest {
 
         reviewOrderPage.placeOrder();
 
-        // 8) Order Complete Page
+        // 7) Order Complete Page
         assertTrue(orderCompletePage.isAtOrderCompletePage());
         assertTrue(orderCompletePage.getHeaderText().contains("Checkout Complete"));
         assertTrue(orderCompletePage.getThankYouMessage().contains("Thank you"));
@@ -103,7 +110,7 @@ public class GuestCheckoutFlowTests extends BaseTest {
 
     @Test
     @Tag("regression")
-    public void guestCanCompleteCheckoutFlowWithMultipleProducts() {
+    public void loggedInUserCanCompleteCheckoutFlowWithMultipleProducts() {
         // 1) Catalog
         assertTrue(catalogPage.isAtCatalogPage());
 
@@ -125,8 +132,7 @@ public class GuestCheckoutFlowTests extends BaseTest {
         productDetailsPage.navBar().openMenu();
 
         // Back to catalog
-        MenuComponent menu = new MenuComponent(driver);
-        menu.openCatalog();
+        new MenuComponent(driver).openCatalog();
         assertTrue(catalogPage.isAtCatalogPage());
 
         // --- Second product ---
@@ -150,28 +156,24 @@ public class GuestCheckoutFlowTests extends BaseTest {
                 () -> assertTrue(cartPage.containsProduct(secondName))
         );
 
-        // 3) Proceed → Login
+        // 3) Checkout Page
         cartPage.proceedToCheckout();
-        assertTrue(loginPage.isAtLoginPage());
-        loginPage.loginWithValidCredentials();
-
-        // 4) Checkout Page
         assertTrue(checkoutPage.isAtCheckoutPage());
+
         CheckoutData checkoutData = CheckoutDataFactory.createValidCheckoutData();
         checkoutPage.fillShippingAddress(checkoutData);
         checkoutPage.goToPayment();
 
-        // 5) Payment Page
+        // 4) Payment Page
         assertTrue(paymentPage.isAtPaymentPage());
         PaymentData paymentData = PaymentDataFactory.createValidPaymentData();
         paymentPage.fillPaymentData(paymentData);
         paymentPage.reviewOrder();
 
-        // 6) Review Order Page
+        // 5) Review Order Page
         assertTrue(reviewOrderPage.isAtReviewOrderPage());
         assertEquals(2, reviewOrderPage.getProductsCount());
 
-        // Validate both products
         assertAll("Review order validation",
                 () -> assertTrue(reviewOrderPage.getAllProductNames().contains(firstName)),
                 () -> assertTrue(reviewOrderPage.getAllProductNames().contains(secondName)),
@@ -187,7 +189,7 @@ public class GuestCheckoutFlowTests extends BaseTest {
 
         reviewOrderPage.placeOrder();
 
-        // 7) Order Complete Page
+        // 6) Order Complete Page
         assertTrue(orderCompletePage.isAtOrderCompletePage());
         assertTrue(orderCompletePage.getHeaderText().contains("Checkout Complete"));
     }

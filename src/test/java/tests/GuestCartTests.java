@@ -101,9 +101,12 @@ public class GuestCartTests extends BaseTest {
         productDetailsPage.navBar().openCart();
 
         assertTrue(cartPage.isCartNotEmpty());
-        assertEquals(2, cartPage.getItemCount());
-        assertTrue(cartPage.containsProduct(firstName));
-        assertTrue(cartPage.containsProduct(secondName));
+        assertAll("Cart content validation",
+                () -> assertEquals(2, cartPage.getItemCount()),
+                () -> assertTrue(cartPage.containsProduct(firstName)),
+                () -> assertTrue(cartPage.containsProduct(secondName))
+        );
+
 
         BigDecimal cartTotalPrice = parsePrice(cartPage.getTotalPrice());
         BigDecimal expectedTotalPrice = parsePrice(firstPrice).add(parsePrice(secondPrice));
@@ -204,11 +207,14 @@ public class GuestCartTests extends BaseTest {
         productDetailsPage.navBar().openCart();
 
         assertTrue(cartPage.isCartNotEmpty());
-        assertEquals(increasedQty, cartPage.getItemQuantity(0));
 
         BigDecimal expectedTotalPrice = price.multiply(BigDecimal.valueOf(increasedQty));
         BigDecimal actualTotalPrice = parsePrice(cartPage.getTotalPrice());
-        assertEquals(expectedTotalPrice, actualTotalPrice);
+
+        assertAll("Cart validation",
+                () -> assertEquals(increasedQty, cartPage.getItemQuantity(0)),
+                () -> assertEquals(expectedTotalPrice, actualTotalPrice)
+        );
     }
 
     @Test
@@ -279,9 +285,11 @@ public class GuestCartTests extends BaseTest {
         String totalPrice = cartPage.getTotalPrice();
         Integer itemsInCart = cartPage.getNumberOfItemsInCart();
 
-        assertEquals(productQuantity, quantity);
-        assertEquals(quantity, itemsInCart);
-        assertEquals(productPrice, price);
-        assertEquals(productPrice, totalPrice);
+        assertAll("Cart validation",
+                () -> assertEquals(productQuantity, quantity),
+                () -> assertEquals(quantity, itemsInCart),
+                () -> assertEquals(productPrice, price),
+                () -> assertEquals(productPrice, totalPrice)
+        );
     }
 }

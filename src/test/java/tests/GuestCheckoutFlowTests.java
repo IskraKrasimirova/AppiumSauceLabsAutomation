@@ -11,8 +11,7 @@ import pages.*;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static utils.PriceUtils.parsePrice;
 import static utils.ProductSelectionHelper.getStableProductIndex;
 import static utils.ProductSelectionHelper.getTwoStableProductIndices;
@@ -88,9 +87,11 @@ public class GuestCheckoutFlowTests extends BaseTest {
 
         // 7) Review Order Page
         assertTrue(reviewOrderPage.isAtReviewOrderPage());
-        assertEquals(1, reviewOrderPage.getProductsCount());
-        assertEquals(expectedName, reviewOrderPage.getProductName(0));
-        assertEquals(expectedPrice, reviewOrderPage.getProductPrice(0));
+        assertAll("Review order validation",
+                () -> assertEquals(1, reviewOrderPage.getProductsCount()),
+                () -> assertEquals(expectedName, reviewOrderPage.getProductName(0)),
+                () -> assertEquals(expectedPrice, reviewOrderPage.getProductPrice(0))
+        );
 
         reviewOrderPage.placeOrder();
 
@@ -144,9 +145,11 @@ public class GuestCheckoutFlowTests extends BaseTest {
 
         // 2) Cart
         assertTrue(cartPage.isCartNotEmpty());
-        assertEquals(2, cartPage.getItemCount());
-        assertTrue(cartPage.containsProduct(firstName));
-        assertTrue(cartPage.containsProduct(secondName));
+        assertAll("Cart content validation",
+                () -> assertEquals(2, cartPage.getItemCount()),
+                () -> assertTrue(cartPage.containsProduct(firstName)),
+                () -> assertTrue(cartPage.containsProduct(secondName))
+        );
 
         // 3) Proceed → Login
         cartPage.proceedToCheckout();
@@ -170,11 +173,12 @@ public class GuestCheckoutFlowTests extends BaseTest {
         assertEquals(2, reviewOrderPage.getProductsCount());
 
         // Validate both products
-        assertTrue(reviewOrderPage.getAllProductNames().contains(firstName));
-        assertTrue(reviewOrderPage.getAllProductNames().contains(secondName));
-        assertTrue(reviewOrderPage.getAllProductPrices().contains(firstPrice));
-        assertTrue(reviewOrderPage.getAllProductPrices().contains(secondPrice));
-
+        assertAll("Review order validation",
+                () -> assertTrue(reviewOrderPage.getAllProductNames().contains(firstName)),
+                () -> assertTrue(reviewOrderPage.getAllProductNames().contains(secondName)),
+                () -> assertTrue(reviewOrderPage.getAllProductPrices().contains(firstPrice)),
+                () -> assertTrue(reviewOrderPage.getAllProductPrices().contains(secondPrice))
+        );
 
         // Validate total price
         BigDecimal deliveryPrice = parsePrice(reviewOrderPage.getDeliveryPrice());

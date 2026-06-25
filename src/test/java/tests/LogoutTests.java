@@ -72,9 +72,11 @@ public class LogoutTests extends BaseTest {
         logoutModal = new LogoutComponent(driver);
         assertTrue(logoutModal.isVisible());
 
-        assertEquals("Log Out", logoutModal.getModalTitle());
-        assertEquals("Are you sure you want to logout", logoutModal.getModalMessage());
-        assertEquals("CANCEL", logoutModal.getCancelButtonText());
-        assertEquals("LOGOUT", logoutModal.getLogoutButtonText());
+        assertAll("Logout modal text validation",
+                () -> assertEquals("Log Out", logoutModal.getModalTitle()),
+                () -> assertEquals("Are you sure you want to logout", logoutModal.getModalMessage()),
+                () -> assertEquals("CANCEL", logoutModal.getCancelButtonText()),
+                () -> assertEquals("LOGOUT", logoutModal.getLogoutButtonText())
+        );
     }
 }

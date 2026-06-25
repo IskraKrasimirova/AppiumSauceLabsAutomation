@@ -44,10 +44,11 @@ public class LoginTests extends BaseTest {
         assertTrue(catalogPage.isAtCatalogPage());
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "[{index}] {0} → (\"{1}\"/\"{2}\")")
     @MethodSource("invalidLoginData")
     @Tag("regression")
     public void userCannotLoginWithInvalidCredentials(
+            String testedCase,
             String username,
             String password,
             boolean expectUsernameError,
@@ -73,19 +74,19 @@ public class LoginTests extends BaseTest {
 
     private static Stream<Arguments> invalidLoginData() {
         return Stream.of(
-                Arguments.of("", "", true, false),
-                Arguments.of("iskra@iskra.com", "", false, true),
-                Arguments.of("a", "", false, true),
-                Arguments.of("1", "", false, true),
-                Arguments.of("@", "", false, true),
-                Arguments.of("!@#$%^&*()_+=<>?|-;:", "", false, true)
+                Arguments.of("Empty username and password", "", "", true, false),
+                Arguments.of("Valid email, empty password", "iskra@iskra.com", "", false, true),
+                Arguments.of("Single char username", "a", "", false, true),
+                Arguments.of("Single numeric username", "1", "", false, true),
+                Arguments.of("Single character username", "@", "", false, true),
+                Arguments.of("Special characters username", "!@#$%^&*()_+=<>?|-;:", "", false, true)
         );
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "[{index}] {0} → (\"{1}\"/\"{2}\")")
     @MethodSource("userCredentials")
     @Tag("regression")
-    public void userCanLoginWithAnyCredentials(String username, String password) {
+    public void userCanLoginWithAnyCredentials(String testedCase, String username, String password) {
         loginPage.login(username, password);
 
         assertTrue(catalogPage.isAtCatalogPage());
@@ -97,12 +98,12 @@ public class LoginTests extends BaseTest {
 
     private static Stream<Arguments> userCredentials() {
         return Stream.of(
-                Arguments.of("a", "a"),
-                Arguments.of("123", "123"),
-                Arguments.of("iskra", "password"),
-                Arguments.of("!@#$%", "!@#$%"),
-                Arguments.of("test@user.com", "whatever"),
-                Arguments.of("bod@example.com", "Pass123")
+                Arguments.of("Lowercase single char", "a", "a"),
+                Arguments.of("Numeric credentials", "123", "123"),
+                Arguments.of("Simple username/password", "iskra", "password"),
+                Arguments.of("Special characters", "!@#$%", "!@#$%"),
+                Arguments.of("Valid Email format and any password", "test@user.com", "whatever"),
+                Arguments.of("Valid given email and any password", "bod@example.com", "Pass123")
         );
     }
 

@@ -43,7 +43,9 @@ public class DriverFactory {
                 .setApp(appPath)
                 .setNoReset(settings.NoReset)
                 .setAppWaitActivity("*")
-                .setAppWaitForLaunch(true);
+                .setAppWaitForLaunch(true)
+                .setDisableWindowAnimation(true)
+                .setAdbExecTimeout(Duration.ofSeconds(60));
 
         try {
             driver = new AndroidDriver(new URL(settings.ServerUrl), options);

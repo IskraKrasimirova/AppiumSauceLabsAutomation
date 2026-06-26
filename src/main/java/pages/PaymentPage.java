@@ -57,6 +57,40 @@ public class PaymentPage extends BasePage {
         return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/paymentBtn"));
     }
 
+    // Value looks invalid.
+    private WebElement fullNameErrorMessage() {
+        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/nameErrorTV"));
+    }
+
+    // No error message
+    private WebElement cardNumberErrorMessage() {
+        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/cardNumberErrorTV"));
+    }
+
+    private WebElement expirationDateErrorMessage() {
+        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/expirationDateErrorTV"));
+    }
+
+    private WebElement securityCodeErrorMessage() {
+        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/securityCodeErrorTV"));
+    }
+
+    private WebElement fullNameErrorSymbol() {
+        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/nameErrorIV"));
+    }
+
+    private WebElement cardNumberErrorSymbol() {
+        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/cardNumberErrorIV"));
+    }
+
+    private WebElement expirationDateErrorSymbol() {
+        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/expirationDateIV"));
+    }
+
+    private WebElement securityCodeErrorSymbol() {
+        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/securityCodeIV"));
+    }
+
     public PaymentPage(AppiumDriver driver) {
         super(driver);
     }
@@ -82,5 +116,21 @@ public class PaymentPage extends BasePage {
 
         return checkoutHeader().isDisplayed()
                 && paymentMethodText().isDisplayed();
+    }
+
+    public String getFullNameErrorMessage() {
+        return fullNameErrorMessage().getText();
+    }
+
+    public String getCardNumberErrorMessage() {
+        return cardNumberErrorMessage().getText();
+    }
+
+    public String getExpirationDateErrorMessage() {
+        return expirationDateErrorMessage().getText();
+    }
+
+    public String getSecurityCodeErrorMessage() {
+        return securityCodeErrorMessage().getText();
     }
 }

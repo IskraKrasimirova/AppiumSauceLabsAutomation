@@ -19,4 +19,30 @@ public class CheckoutDataFactory {
 
         return data;
     }
+
+    public static CheckoutData createWithMissingField(String fieldName) {
+        CheckoutData data = createValidCheckoutData();
+
+        switch (fieldName) {
+            case "fullName":
+                data.fullName = "";
+                break;
+            case "address":
+                data.address = "";
+                break;
+            case "city":
+                data.city = "";
+                break;
+            case "zipCode":
+                data.zipCode = "";
+                break;
+            case "country":
+                data.country = "";
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown field: " + fieldName);
+        }
+
+        return data;
+    }
 }

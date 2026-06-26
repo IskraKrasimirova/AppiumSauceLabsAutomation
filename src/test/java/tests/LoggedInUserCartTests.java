@@ -21,7 +21,7 @@ public class LoggedInUserCartTests extends BaseTest {
     private LoginPage loginPage;
 
     @BeforeEach
-    public void setUp() {
+    public void setUpLoggedInUser() {
         catalogPage = new CatalogPage(driver);
         productDetailsPage = new ProductDetailsPage(driver);
         cartPage = new CartPage(driver);

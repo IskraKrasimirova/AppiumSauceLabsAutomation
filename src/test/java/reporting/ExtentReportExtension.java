@@ -23,23 +23,33 @@ public class ExtentReportExtension implements TestWatcher, BeforeTestExecutionCa
     }
 
     @Override
-    public void testSuccessful(ExtensionContext context) {
-        testThread.get().pass("Test passed");
+    public void testFailed(ExtensionContext context, Throwable cause) {
+        ExtentTest test = testThread.get();
+        if (test == null) return;
+
+        test.fail(cause);
+
+        try {
+            String screenshotPath = ScreenshotUtils.takeScreenshot(context.getDisplayName());
+            test.addScreenCaptureFromPath(screenshotPath);
+        } catch (Exception ignored) {
+        }
     }
 
     @Override
-    public void testFailed(ExtensionContext context, Throwable cause) {
+    public void testSuccessful(ExtensionContext context) {
         ExtentTest test = testThread.get();
-        test.fail(cause);
+        if (test == null) return;
 
-        // Screenshot on failure
-        String screenshotPath = ScreenshotUtils.takeScreenshot(context.getDisplayName());
-        test.addScreenCaptureFromPath(screenshotPath);
+        test.pass("Test passed");
     }
 
     @Override
     public void testDisabled(ExtensionContext context, Optional<String> reason) {
-        testThread.get().skip("Test skipped: " + reason.orElse("No reason"));
+        ExtentTest test = testThread.get();
+        if (test == null) return;
+
+        test.skip("Test skipped: " + reason.orElse("No reason"));
     }
 
     @Override

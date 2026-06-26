@@ -102,4 +102,48 @@ public class CheckoutTests extends BaseTest {
         PaymentPage paymentPage = new PaymentPage(driver);
         assertTrue(paymentPage.isAtPaymentPage());
     }
+
+    @ParameterizedTest(name = "Field {0} accepts value: \"{1}\"")
+    @MethodSource("validWeirdValues")
+    @Tag("regression")
+    @Tag("validation")
+    public void checkoutAcceptsAnyNonEmptyValue(String field, String value) {
+
+        CheckoutData data = CheckoutDataFactory.createWithCustomValue(field, value);
+
+        checkoutPage.fillShippingAddress(data);
+        checkoutPage.goToPayment();
+
+        PaymentPage paymentPage = new PaymentPage(driver);
+        assertTrue(paymentPage.isAtPaymentPage());
+    }
+
+    private static Stream<Arguments> validWeirdValues() {
+        return Stream.of(
+                Arguments.of("fullName", "a"),
+                Arguments.of("fullName", "1"),
+                Arguments.of("fullName", "@"),
+                Arguments.of("fullName", "abc123!@#"),
+
+                Arguments.of("address", "a"),
+                Arguments.of("address", "1"),
+                Arguments.of("address", "@"),
+                Arguments.of("address", "abc--1@-/$&*'"),
+
+                Arguments.of("city", "a"),
+                Arguments.of("city", "1"),
+                Arguments.of("city", "@"),
+                Arguments.of("city", "a@ 1.com-&*!?  B"),
+
+                Arguments.of("zipCode", "1"),
+                Arguments.of("zipCode", "00000"),
+                Arguments.of("zipCode", "@"),
+                Arguments.of("zipCode", "a-b--1 @#$%^&*()!  O"),
+
+                Arguments.of("country", "a"),
+                Arguments.of("country", "1"),
+                Arguments.of("country", "@"),
+                Arguments.of("country", "aB--  123-!?&%@#")
+        );
+    }
 }

@@ -45,4 +45,30 @@ public class CheckoutDataFactory {
 
         return data;
     }
+
+    public static CheckoutData createWithCustomValue(String field, String value){
+        CheckoutData data = createValidCheckoutData();
+
+        switch (field) {
+            case "fullName":
+                data.fullName = value;
+                break;
+            case "address":
+                data.address = value;
+                break;
+            case "city":
+                data.city = value;
+                break;
+            case "zipCode":
+                data.zipCode = value;
+                break;
+            case "country":
+                data.country = value;
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown field: " + field);
+        }
+
+        return data;
+    }
 }

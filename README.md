@@ -117,8 +117,8 @@ mvn clean test
 
 ## ⚠️ Known Issues in MyDemoApp (Important) 
 
-During testing, two reproducible crashes were identified in the Product Catalog screen.
-These issues originate from the application itself and are not related to the automation framework.
+<p>During testing, two reproducible crashes were identified in the Product Catalog screen.
+These issues originate from the application itself and are not related to the automation framework.</p>
 ---
 
 ### ❗ 1. The product at index 1 (e.g., “Sauce Labs Backpack (green)”) crashes the app
@@ -148,8 +148,8 @@ These logs confirm that the issues originate from the hardcoded `meta[]` array i
 
 ### Summary
 
-These crashes are caused by the hardcoded meta[] array inside ProductCatalogFragment and are part of the demo behavior of MyDemoApp.
-The automation suite avoids unstable product indices to ensure consistent, repeatable execution.
+<p>These crashes are caused by the hardcoded meta[] array inside ProductCatalogFragment and are part of the demo behavior of MyDemoApp.
+The automation suite avoids unstable product indices to ensure consistent, repeatable execution.</p>
 ---
 
 ## 🔧 Future Improvements

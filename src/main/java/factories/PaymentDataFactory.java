@@ -1,5 +1,6 @@
 package factories;
 
+import models.CheckoutData;
 import models.PaymentData;
 import net.datafaker.Faker;
 
@@ -21,6 +22,52 @@ public class PaymentDataFactory {
         data.expirationDate = expDate;
         data.securityCode = faker.number().digits(3);
         data.billingSameAsShipping = true;
+
+        return data;
+    }
+
+    public static PaymentData createWithMissingField(String fieldName) {
+        PaymentData data = createValidPaymentData();
+
+        switch (fieldName) {
+            case "fullName":
+                data.fullName = "";
+                break;
+            case "cardNumber":
+                data.cardNumber = "";
+                break;
+            case "expirationDate":
+                data.expirationDate = "";
+                break;
+            case "securityCode":
+                data.securityCode = "";
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown field: " + fieldName);
+        }
+
+        return data;
+    }
+
+    public static PaymentData createWithCustomValue(String field, String value){
+        PaymentData data = createValidPaymentData();
+
+        switch (field) {
+            case "fullName":
+                data.fullName = value;
+                break;
+            case "cardNumber":
+                data.cardNumber = value;
+                break;
+            case "expirationDate":
+                data.expirationDate = value;
+                break;
+            case "securityCode":
+                data.securityCode = value;
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown field: " + field);
+        }
 
         return data;
     }

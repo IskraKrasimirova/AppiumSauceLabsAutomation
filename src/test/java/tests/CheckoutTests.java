@@ -24,8 +24,6 @@ public class CheckoutTests extends BaseTest {
 
     @BeforeEach
     public void setUpCheckout() {
-        super.setUp();
-
         catalogPage = new CatalogPage(driver);
         productDetailsPage = new ProductDetailsPage(driver);
         cartPage = new CartPage(driver);

@@ -84,6 +84,26 @@ All interactions follow the Page Object Model best practices:
 
 ---
 
+## 📊 Reporting
+
+The automation framework includes full HTML reporting using **ExtentReports**.
+
+### Features:
+- Automatic HTML report generation after each test run
+- Detailed logs for each test (steps, status, duration)
+- Screenshot capture on failure
+- Category grouping using JUnit 5 @Tag annotations
+- Thread-safe reporting via a custom JUnit 5 extension (ExtentReportExtension)
+
+The report includes:
+- Dashboard with execution statistics
+- Passed / Failed / Skipped test lists
+- Stack traces for failures
+- Embedded screenshots
+- Category-based filtering (smoke, regression, validation)
+
+---
+
 ## 🚀 Running the Tests
 
 1. Start an Android emulator
@@ -95,7 +115,8 @@ mvn clean test
 ```
 ---
 
-## ⚠️ Known Issues in MyDemoApp (Important)
+## ⚠️ Known Issues in MyDemoApp (Important) 
+
 During testing, two reproducible crashes were identified in the Product Catalog screen.
 These issues originate from the application itself and are not related to the automation framework.
 ---
@@ -126,6 +147,7 @@ These logs confirm that the issues originate from the hardcoded `meta[]` array i
 ---
 
 ### Summary
+
 These crashes are caused by the hardcoded meta[] array inside ProductCatalogFragment and are part of the demo behavior of MyDemoApp.
 The automation suite avoids unstable product indices to ensure consistent, repeatable execution.
 ---

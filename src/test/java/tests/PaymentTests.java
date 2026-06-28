@@ -184,7 +184,7 @@ public class PaymentTests extends BaseTest{
     @Test
     @Tag("regression")
     @Tag("validation")
-    public void paymentWithValidDataAndUncheckedBillingCheckboxWithEmptyBillingFieldsShowsErrors() {
+    public void paymentWithValidDataAndDifferentBillingAddressWithEmptyBillingFieldsShowsErrors() {
         // Fill payment fields
         PaymentData data = PaymentDataFactory.createValidPaymentData();
         paymentPage.fillPaymentData(data);
@@ -199,18 +199,18 @@ public class PaymentTests extends BaseTest{
         paymentPage.reviewOrder();
 
         assertAll("Billing validation errors",
-                () -> assertTrue(paymentPage.isBillingErrorVisible("billingFullName")),
-                () -> assertTrue(paymentPage.isBillingErrorVisible("billingAddress")),
-                () -> assertTrue(paymentPage.isBillingErrorVisible("billingCity")),
-                () -> assertTrue(paymentPage.isBillingErrorVisible("billingZip")),
-                () -> assertTrue(paymentPage.isBillingErrorVisible("billingCountry"))
+                () -> assertEquals(CheckoutSection.FULL_NAME_ERROR_MESSAGE, paymentPage.billingSection().getFullNameErrorMessage()),
+                () -> assertEquals(CheckoutSection.ADDRESS_ERROR_MESSAGE, paymentPage.billingSection().getAddressErrorMessage()),
+                () -> assertEquals(CheckoutSection.CITY_ERROR_MESSAGE, paymentPage.billingSection().getCityErrorMessage()),
+                () -> assertEquals(CheckoutSection.ZIP_CODE_ERROR_MESSAGE, paymentPage.billingSection().getZipErrorMessage()),
+                () -> assertEquals(CheckoutSection.COUNTRY_ERROR_MESSAGE, paymentPage.billingSection().getCountryErrorMessage())
         );
     }
 
     @Test
     @Tag("regression")
     @Tag("validation")
-    public void paymentWithValidDataAndUncheckedBillingCheckboxAndBillingSectionFilledSuccessfullyNavigatesToReviewOrder() {
+    public void paymentWithValidDataAndDifferentBillingAddressWithValidDataSuccessfullyNavigatesToReviewOrder() {
         // Fill payment fields
         PaymentData data = PaymentDataFactory.createValidPaymentData();
         paymentPage.fillPaymentData(data);
@@ -222,7 +222,7 @@ public class PaymentTests extends BaseTest{
 
         // Fill billing fields (with scroll)
         CheckoutData billingData = CheckoutDataFactory.createValidCheckoutData();
-        paymentPage.fillShippingAddress(billingData);
+        paymentPage.fillBillingAddress(billingData);
 
         // Continue
         paymentPage.reviewOrder();

@@ -15,14 +15,6 @@ public class PaymentPage extends BasePage {
     private final By cardNumberErrorSymbolLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/cardNumberErrorIV");
     private final By expirationDateErrorSymbolLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/expirationDateIV");
     private final By securityCodeErrorSymbolLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/securityCodeIV");
-    private final By billingSectionLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/checkoutInfoCL");
-    private final By billingFullNameInputLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/fullNameET");
-    private final By billingAddressInputLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/address1ET");
-    private final By billingCityInputLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/cityET");
-    private final By billingZipCodeInputLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/zipET");
-    private final By billingCountryInputLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/countryET");
-    private final By billingAddress2InputLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/address2ET");
-    private final By billingStateInputLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/stateET");
 
     private WebElement checkoutHeader() {
         return driver.findElement(checkoutHeaderLocator);
@@ -72,7 +64,6 @@ public class PaymentPage extends BasePage {
         return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/paymentBtn"));
     }
 
-    // Value looks invalid.
     private WebElement fullNameErrorMessage() {
         return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/nameErrorTV"));
     }
@@ -90,72 +81,16 @@ public class PaymentPage extends BasePage {
         return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/securityCodeErrorTV"));
     }
 
-    private WebElement billingFullNameInput() {
-        return driver.findElement(billingFullNameInputLocator);
-    }
-
-    private WebElement billingAddressInput() {
-        return driver.findElement(billingAddressInputLocator);
-    }
-
-    private WebElement billingCityInput() {
-        return driver.findElement(billingCityInputLocator);
-    }
-
-    private WebElement billingZipCodeInput() {
-        return driver.findElement(billingZipCodeInputLocator);
-    }
-
-    private WebElement billingCountryInput() {
-        return driver.findElement(billingCountryInputLocator);
-    }
-
-    private WebElement billingAddress2Input() {
-        return driver.findElement(billingAddress2InputLocator);
-    }
-
-    private WebElement billingStateInput() {
-        return driver.findElement(billingStateInputLocator);
-    }
-
-    private WebElement billingFullNameErrorMessage() {
-        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/fullNameErrorTV"));
-    }
-
-    private WebElement billingAddressErrorMessage() {
-        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/address1ErrorTV"));
-    }
-
-    private WebElement billingCityErrorMessage() {
-        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/cityErrorTV"));
-    }
-
-    private WebElement billingZipCodeErrorMessage() {
-        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/zipErrorTV"));
-    }
-
-    private WebElement billingCountryErrorMessage() {
-        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/countryErrorTV"));
-    }
-
-    private WebElement fullNameErrorSymbol() {
-        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/nameErrorIV"));
-    }
-
-    private WebElement cardNumberErrorSymbol() {
-        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/cardNumberErrorIV"));
-    }
-
-    private WebElement expirationDateErrorSymbol() {
-        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/expirationDateIV"));
-    }
-
-    private WebElement securityCodeErrorSymbol() {
-        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/securityCodeIV"));
-    }
+    private final CheckoutSection billingSection;
+    private final By billingSectionLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/checkoutInfoCL");
 
     public PaymentPage(AppiumDriver driver) {
         super(driver);
+        billingSection = new CheckoutSection(driver);
+    }
+
+    public CheckoutSection billingSection() {
+        return billingSection;
     }
 
     public void fillPaymentData(PaymentData data) {
@@ -233,53 +168,8 @@ public class PaymentPage extends BasePage {
         return !driver.findElements(billingSectionLocator).isEmpty();
     }
 
-    public void fillShippingAddress(CheckoutData data) {
-        scrollUntilVisible(billingCountryInputLocator, 5);
-        driverExt.enterText(billingFullNameInput(), data.fullName);
-
-        scrollUntilVisible(billingAddressInputLocator, 5);
-        driverExt.enterText(billingAddressInput(), data.address);
-
-        scrollUntilVisible(billingAddress2InputLocator, 5);
-        driverExt.enterText(billingAddress2Input(), data.address2);
-
-        scrollUntilVisible(billingCityInputLocator, 5);
-        driverExt.enterText(billingCityInput(), data.city);
-
-        scrollUntilVisible(billingStateInputLocator, 5);
-        driverExt.enterText(billingStateInput(), data.state);
-
-        scrollUntilVisible(billingZipCodeInputLocator, 5);
-        driverExt.enterText(billingZipCodeInput(), data.zipCode);
-
-        scrollUntilVisible(billingCountryInputLocator, 5);
-        driverExt.enterText(billingCountryInput(), data.country);
-    }
-
-    public boolean isBillingErrorVisible(String field) {
-        try {
-            switch (field) {
-                case "billingFullName":
-                    scrollUntilVisible(billingFullNameInputLocator, 5);
-                    return billingFullNameErrorMessage().isDisplayed();
-                case "billingAddress":
-                    scrollUntilVisible(billingAddressInputLocator, 5);
-                    return billingAddressErrorMessage().isDisplayed();
-                case "billingCity":
-                    scrollUntilVisible(billingCityInputLocator, 5);
-                    return billingCityErrorMessage().isDisplayed();
-                case "billingZip":
-                    scrollUntilVisible(billingZipCodeInputLocator, 5);
-                    return billingZipCodeErrorMessage().isDisplayed();
-                case "billingCountry":
-                    scrollUntilVisible(billingCountryInputLocator, 5);
-                    return billingCountryErrorMessage().isDisplayed();
-                default:
-                    return false;
-            }
-        } catch (Exception e) {
-            return false;
-        }
+    public void fillBillingAddress(CheckoutData data) {
+        billingSection().fill(data);
     }
 
     private boolean isBillingAddressChecked() {

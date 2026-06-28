@@ -57,11 +57,11 @@ public class CheckoutTests extends BaseTest {
         checkoutPage.goToPayment();
 
         assertAll("All validation errors",
-                () -> assertEquals(CheckoutPage.FULL_NAME_ERROR_MESSAGE, checkoutPage.getFullNameErrorMessage()),
-                () -> assertEquals(CheckoutPage.ADDRESS_ERROR_MESSAGE, checkoutPage.getAddressErrorMessage()),
-                () -> assertEquals(CheckoutPage.CITY_ERROR_MESSAGE, checkoutPage.getCityErrorMessage()),
-                () -> assertEquals(CheckoutPage.ZIP_CODE_ERROR_MESSAGE, checkoutPage.getZipErrorMessage()),
-                () -> assertEquals(CheckoutPage.COUNTRY_ERROR_MESSAGE, checkoutPage.getCountryErrorMessage())
+                () -> assertEquals(CheckoutSection.FULL_NAME_ERROR_MESSAGE, checkoutPage.checkoutSection().getFullNameErrorMessage()),
+                () -> assertEquals(CheckoutSection.ADDRESS_ERROR_MESSAGE, checkoutPage.checkoutSection().getAddressErrorMessage()),
+                () -> assertEquals(CheckoutSection.CITY_ERROR_MESSAGE, checkoutPage.checkoutSection().getCityErrorMessage()),
+                () -> assertEquals(CheckoutSection.ZIP_CODE_ERROR_MESSAGE, checkoutPage.checkoutSection().getZipErrorMessage()),
+                () -> assertEquals(CheckoutSection.COUNTRY_ERROR_MESSAGE, checkoutPage.checkoutSection().getCountryErrorMessage())
         );
     }
 
@@ -75,17 +75,17 @@ public class CheckoutTests extends BaseTest {
         checkoutPage.fillShippingAddress(data);
         checkoutPage.goToPayment();
 
-        assertEquals(expectedError, checkoutPage.getErrorMessage(fieldName));
-        assertTrue(checkoutPage.isErrorSymbolVisible(fieldName));
+        assertEquals(expectedError, checkoutPage.checkoutSection().getErrorMessage(fieldName));
+        assertTrue(checkoutPage.checkoutSection().isErrorSymbolVisible(fieldName));
     }
 
     private static Stream<Arguments> mandatoryFieldsAndErrorMessages() {
         return Stream.of(
-                Arguments.of("fullName", CheckoutPage.FULL_NAME_ERROR_MESSAGE),
-                Arguments.of("address", CheckoutPage.ADDRESS_ERROR_MESSAGE),
-                Arguments.of("city", CheckoutPage.CITY_ERROR_MESSAGE),
-                Arguments.of("zipCode", CheckoutPage.ZIP_CODE_ERROR_MESSAGE),
-                Arguments.of("country", CheckoutPage.COUNTRY_ERROR_MESSAGE)
+                Arguments.of("fullName", CheckoutSection.FULL_NAME_ERROR_MESSAGE),
+                Arguments.of("address", CheckoutSection.ADDRESS_ERROR_MESSAGE),
+                Arguments.of("city", CheckoutSection.CITY_ERROR_MESSAGE),
+                Arguments.of("zipCode", CheckoutSection.ZIP_CODE_ERROR_MESSAGE),
+                Arguments.of("country", CheckoutSection.COUNTRY_ERROR_MESSAGE)
         );
     }
 

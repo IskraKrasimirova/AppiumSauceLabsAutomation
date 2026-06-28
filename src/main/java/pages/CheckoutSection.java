@@ -134,79 +134,36 @@ public class CheckoutSection extends  BasePage {
     }
 
     public String getErrorMessage(String field) {
-        String errorMessage = "";
-
-        switch (field) {
-            case "fullName":
-                errorMessage = getFullNameErrorMessage();
-                break;
-            case "address":
-                errorMessage = getAddressErrorMessage();
-                break;
-            case "city":
-                errorMessage = getCityErrorMessage();
-                break;
-            case "zipCode":
-                errorMessage = getZipErrorMessage();
-                break;
-            case "country":
-                errorMessage = getCountryErrorMessage();
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown field: " + field);
-        }
-
-        return errorMessage;
+        By locator = getErrorMessageLocator(field);
+        scrollUntilVisible(locator, 5);
+        return driver.findElement(locator).getText();
     }
 
     public boolean isErrorSymbolVisible(String field) {
-        boolean visible;
+        By locator = getErrorSymbolLocator(field);
+        scrollUntilVisible(locator, 5);
+        return !driver.findElements(locator).isEmpty();
+    }
 
+    private By getErrorMessageLocator(String field) {
         switch (field) {
-            case "fullName":
-                visible = isFullNameErrorSymbolVisible();
-                break;
-            case "address":
-                visible = isAddressErrorSymbolVisible();
-                break;
-            case "city":
-                visible = isCityErrorSymbolVisible();
-                break;
-            case "zipCode":
-                visible = isZipCodeErrorSymbolVisible();
-                break;
-            case "country":
-                visible = isCountryErrorSymbolVisible();
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown field: " + field);
+            case "fullName": return fullNameErrorMessageLocator;
+            case "address": return addressErrorMessageLocator;
+            case "city": return cityErrorMessageLocator;
+            case "zipCode": return zipCodeErrorMessageLocator;
+            case "country": return countryErrorMessageLocator;
+            default: throw new IllegalArgumentException("Unknown field: " + field);
         }
-
-        return visible;
     }
 
-    private boolean isFullNameErrorSymbolVisible() {
-        scrollUntilVisible(fullNameErrorSymbolLocator, 5);
-        return !driver.findElements(fullNameErrorSymbolLocator).isEmpty();
-    }
-
-    private boolean isAddressErrorSymbolVisible() {
-        scrollUntilVisible(addressErrorSymbolLocator, 5);
-        return !driver.findElements(addressErrorSymbolLocator).isEmpty();
-    }
-
-    private boolean isCityErrorSymbolVisible() {
-        scrollUntilVisible(cityErrorSymbolLocator, 5);
-        return !driver.findElements(cityErrorSymbolLocator).isEmpty();
-    }
-
-    private boolean isZipCodeErrorSymbolVisible() {
-        scrollUntilVisible(zipCodeErrorSymbolLocator, 5);
-        return !driver.findElements(zipCodeErrorSymbolLocator).isEmpty();
-    }
-
-    private boolean isCountryErrorSymbolVisible() {
-        scrollUntilVisible(countryErrorSymbolLocator, 5);
-        return !driver.findElements(countryErrorSymbolLocator).isEmpty();
+    private By getErrorSymbolLocator(String field) {
+        switch (field) {
+            case "fullName": return fullNameErrorSymbolLocator;
+            case "address": return addressErrorSymbolLocator;
+            case "city": return cityErrorSymbolLocator;
+            case "zipCode": return zipCodeErrorSymbolLocator;
+            case "country": return countryErrorSymbolLocator;
+            default: throw new IllegalArgumentException("Unknown field: " + field);
+        }
     }
 }

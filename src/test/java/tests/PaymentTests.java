@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Tag("payment")
-public class PaymentTests extends BaseTest{
+public class PaymentTests extends BaseTest {
     private CatalogPage catalogPage;
     private ProductDetailsPage productDetailsPage;
     private CartPage cartPage;
@@ -184,7 +184,30 @@ public class PaymentTests extends BaseTest{
     @Test
     @Tag("regression")
     @Tag("validation")
-    public void paymentWithValidDataAndDifferentBillingAddressWithEmptyBillingFieldsShowsErrors() {
+    public void paymentBillingWithValidDataSuccessfullyNavigatesToReviewOrder() {
+        // Fill payment fields
+        PaymentData data = PaymentDataFactory.createValidPaymentData();
+        paymentPage.fillPaymentData(data);
+
+        // Uncheck checkbox
+        paymentPage.uncheckBillingAddress();
+
+        assertTrue(paymentPage.isBillingSectionVisible());
+
+        // Fill billing fields (with scroll)
+        CheckoutData billingData = CheckoutDataFactory.createValidCheckoutData();
+        paymentPage.fillBillingAddress(billingData);
+
+        // Continue
+        paymentPage.reviewOrder();
+
+        assertTrue(reviewOrderPage.isAtReviewOrderPage());
+    }
+
+    @Test
+    @Tag("regression")
+    @Tag("validation")
+    public void paymentBillingShowsErrorsWhenFieldsAreEmpty() {
         // Fill payment fields
         PaymentData data = PaymentDataFactory.createValidPaymentData();
         paymentPage.fillPaymentData(data);
@@ -207,26 +230,82 @@ public class PaymentTests extends BaseTest{
         );
     }
 
-    @Test
-    @Tag("regression")
+    @ParameterizedTest(name = "Billing missing field: {0}")
+    @MethodSource("billingMandatoryFields")
     @Tag("validation")
-    public void paymentWithValidDataAndDifferentBillingAddressWithValidDataSuccessfullyNavigatesToReviewOrder() {
-        // Fill payment fields
-        PaymentData data = PaymentDataFactory.createValidPaymentData();
-        paymentPage.fillPaymentData(data);
+    @Tag("regression")
+    public void paymentBillingShowsErrorForMissingMandatoryField(String fieldName, String expectedError) {
+        PaymentData paymentData = PaymentDataFactory.createValidPaymentData();
+        paymentPage.fillPaymentData(paymentData);
 
-        // Uncheck checkbox
         paymentPage.uncheckBillingAddress();
-
         assertTrue(paymentPage.isBillingSectionVisible());
 
-        // Fill billing fields (with scroll)
-        CheckoutData billingData = CheckoutDataFactory.createValidCheckoutData();
-        paymentPage.fillBillingAddress(billingData);
+        CheckoutData billingData = CheckoutDataFactory.createWithMissingField(fieldName);
 
-        // Continue
+        paymentPage.fillBillingAddress(billingData);
+        paymentPage.reviewOrder();
+
+        assertEquals(expectedError, paymentPage.billingSection().getErrorMessage(fieldName));
+        assertTrue(paymentPage.billingSection().isErrorSymbolVisible(fieldName));
+    }
+
+    private static Stream<Arguments> billingMandatoryFields() {
+        return Stream.of(
+                Arguments.of("fullName", CheckoutSection.FULL_NAME_ERROR_MESSAGE),
+                Arguments.of("address", CheckoutSection.ADDRESS_ERROR_MESSAGE),
+                Arguments.of("city", CheckoutSection.CITY_ERROR_MESSAGE),
+                Arguments.of("zipCode", CheckoutSection.ZIP_CODE_ERROR_MESSAGE),
+                Arguments.of("country", CheckoutSection.COUNTRY_ERROR_MESSAGE)
+        );
+    }
+
+    @ParameterizedTest(name = "Billing field {0} accepts value: \"{1}\"")
+    @MethodSource("validBillingWeirdValues")
+    @Tag("regression")
+    @Tag("validation")
+    public void paymentBillingAcceptsWeirdValues(String field, String value) {
+
+        PaymentData paymentData = PaymentDataFactory.createValidPaymentData();
+        paymentPage.fillPaymentData(paymentData);
+
+        paymentPage.uncheckBillingAddress();
+        assertTrue(paymentPage.isBillingSectionVisible());
+
+        CheckoutData billingData = CheckoutDataFactory.createWithCustomValue(field, value);
+
+        paymentPage.fillBillingAddress(billingData);
         paymentPage.reviewOrder();
 
         assertTrue(reviewOrderPage.isAtReviewOrderPage());
+    }
+
+    private static Stream<Arguments> validBillingWeirdValues() {
+        return Stream.of(
+                Arguments.of("fullName", "a"),
+                Arguments.of("fullName", "1"),
+                Arguments.of("fullName", "@"),
+                Arguments.of("fullName", "abc123!@#"),
+
+                Arguments.of("address", "a"),
+                Arguments.of("address", "1"),
+                Arguments.of("address", "@"),
+                Arguments.of("address", "abc--1@-/$&*'"),
+
+                Arguments.of("city", "a"),
+                Arguments.of("city", "1"),
+                Arguments.of("city", "@"),
+                Arguments.of("city", "a@ 1.com-&*!?  B"),
+
+                Arguments.of("zipCode", "1"),
+                Arguments.of("zipCode", "00000"),
+                Arguments.of("zipCode", "@"),
+                Arguments.of("zipCode", "a-b--1 @#$%^&*()!  O"),
+
+                Arguments.of("country", "a"),
+                Arguments.of("country", "1"),
+                Arguments.of("country", "@"),
+                Arguments.of("country", "aB--  123-!?&%@#")
+        );
     }
 }

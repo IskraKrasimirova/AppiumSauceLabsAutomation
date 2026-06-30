@@ -109,7 +109,6 @@ public class GuestCartTests extends BaseTest {
                 () -> assertTrue(cartPage.containsProduct(secondName))
         );
 
-
         BigDecimal cartTotalPrice = parsePrice(cartPage.getTotalPrice());
         BigDecimal expectedTotalPrice = parsePrice(firstPrice).add(parsePrice(secondPrice));
 

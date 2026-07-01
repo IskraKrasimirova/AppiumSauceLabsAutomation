@@ -46,8 +46,10 @@ public class ReviewOrderTests extends BaseTest {
     public void reviewOrderPageLoadsCorrectly() {
         // 1) Add product
         assertTrue(catalogPage.isAtCatalogPage());
-        catalogPage.scrollToProduct(0);
-        catalogPage.openProductDetails(0);
+
+        int index = getStableProductIndex();
+        catalogPage.scrollToProduct(index);
+        catalogPage.openProductDetails(index);
 
         assertTrue(productDetailsPage.isAtProductDetailsPage());
         productDetailsPage.selectColor();

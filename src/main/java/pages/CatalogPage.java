@@ -39,10 +39,34 @@ public class CatalogPage extends BasePage {
     }
 
     public boolean isAtCatalogPage() {
+        int attempts = 2; // 1 normal run + 1 retry
+
+        for (int i = 0; i < attempts; i++) {
+            try {
+                // explicit wait: 20–25 sec in CI
+                driverExt.waitUntilVisible(productsHeaderLocator);
+
+                return productsHeader().isDisplayed() &&
+                        productsList().isDisplayed();
+            } catch (Exception e) {
+                // only in failure → 2 sec sleep
+                if (i < attempts - 1) {
+                    try { // CI‑specific stabilization pattern
+                        Thread.sleep(2000);
+                    } catch (InterruptedException ignored) {}
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    /*public boolean isAtCatalogPage() {
         driverExt.waitUntilVisible(productsHeaderLocator);
 
         return productsHeader().isDisplayed() && productsList().isDisplayed();
-    }
+    }*/
 
     /*public boolean isAtCatalogPage() {
         System.out.println("DEBUG: Checking if Catalog page is visible...");

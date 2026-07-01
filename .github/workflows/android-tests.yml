@@ -12,6 +12,24 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [
+          CatalogPageTests,
+          CheckoutTests,
+          PaymentTests,
+          GuestCartTests,
+          GuestCheckoutFlowTests,
+          LoggedInUserCartTests,
+          LoggedInUserCheckoutFlowTests,
+          LoginTests,
+          LogoutTests,
+          OrderCompletePageTests,
+          ProductDetailsPageTests,
+          ReviewOrderTests
+        ]
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -47,28 +65,50 @@ jobs:
           script: |
             nohup adb logcat > logcat.log 2>&1 &
             nohup appium > appium.log 2>&1 &
-            sleep 5
-            mvn -B clean test
+            sleep 10
+            mvn -B -Dtest=${{ matrix.suite }} test
 
       - name: Upload ExtentReport
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: extent-report
+          name: extent-report-${{ matrix.suite }}
           path: Reports/TestReport.html
 
       - name: Upload screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: screenshots
+          name: screenshots-${{ matrix.suite }}
           path: Reports/screenshots/
 
       - name: Upload logs
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: logs
+          name: logs-${{ matrix.suite }}
           path: |
             appium.log
             logcat.log
+
+  merge-reports:
+    runs-on: ubuntu-latest
+    needs: ui-tests
+
+    steps:
+      - name: Download all ExtentReports
+        uses: actions/download-artifact@v4
+        with:
+          path: merged-reports
+
+      - name: Merge ExtentReports
+        run: |
+          mkdir final
+          npm install -g extent-merge
+          extent-merge merged-reports final/CombinedReport.html
+
+      - name: Upload merged report
+        uses: actions/upload-artifact@v4
+        with:
+          name: Combined-ExtentReport
+          path: final/CombinedReport.html

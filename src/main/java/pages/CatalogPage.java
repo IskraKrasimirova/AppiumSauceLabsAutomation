@@ -38,13 +38,13 @@ public class CatalogPage extends BasePage {
         return new NavBar(driver);
     }
 
-    /*public boolean isAtCatalogPage() {
+    public boolean isAtCatalogPage() {
         driverExt.waitUntilVisible(productsHeaderLocator);
 
         return productsHeader().isDisplayed() && productsList().isDisplayed();
-    }*/
+    }
 
-    public boolean isAtCatalogPage() {
+    /*public boolean isAtCatalogPage() {
         System.out.println("DEBUG: Checking if Catalog page is visible...");
 
         try {
@@ -56,7 +56,7 @@ public class CatalogPage extends BasePage {
             System.out.println("DEBUG: Catalog page NOT visible. Exception: " + e);
             return false;
         }
-    }
+    }*/
 
     public int getVisibleProductCount() {
         return productImages().size();

@@ -49,7 +49,7 @@ public class DriverFactory {
 
         try {
             driver = new AndroidDriver(new URL(settings.ServerUrl), options);
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(settings.IsCi ? 15 : 5));
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(settings.IsCi ? 10 : 5));
 
             return driver;
         } catch (Exception e) {

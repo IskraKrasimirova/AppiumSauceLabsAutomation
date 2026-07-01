@@ -19,12 +19,12 @@ public class CatalogPageTests extends BaseTest {
         catalogPage = new CatalogPage(driver);
 
         System.out.println("DEBUG: Starting MyDemoApp test on API 35...");
-        System.out.println("DEBUG: Current package: " + driver.getCapabilities().getCapability("appPackage"));
+        //System.out.println("DEBUG: Current package: " + driver.getCapabilities().getCapability("appPackage"));
 
         assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
 
-        System.out.println("DEBUG: Page source dump:");
-        System.out.println(driver.getPageSource());
+        //System.out.println("DEBUG: Page source dump:");
+        //System.out.println(driver.getPageSource());
     }
 
     @Test

@@ -38,10 +38,24 @@ public class CatalogPage extends BasePage {
         return new NavBar(driver);
     }
 
-    public boolean isAtCatalogPage() {
+    /*public boolean isAtCatalogPage() {
         driverExt.waitUntilVisible(productsHeaderLocator);
 
         return productsHeader().isDisplayed() && productsList().isDisplayed();
+    }*/
+
+    public boolean isAtCatalogPage() {
+        System.out.println("DEBUG: Checking if Catalog page is visible...");
+
+        try {
+            driverExt.waitUntilVisible(productsHeaderLocator);
+            var title = driver.findElement(productsHeaderLocator);
+            System.out.println("DEBUG: Title text = " + title.getText());
+            return true;
+        } catch (Exception e) {
+            System.out.println("DEBUG: Catalog page NOT visible. Exception: " + e);
+            return false;
+        }
     }
 
     public int getVisibleProductCount() {

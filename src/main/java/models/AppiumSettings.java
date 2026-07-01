@@ -8,4 +8,5 @@ public class AppiumSettings {
     public String App;
     public String ServerUrl;
     public boolean NoReset;
+    public boolean IsCi;
 }

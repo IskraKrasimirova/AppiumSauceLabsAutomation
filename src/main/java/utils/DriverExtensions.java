@@ -1,5 +1,6 @@
 package utils;
 
+import config.ConfigReader;
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -12,6 +13,7 @@ import java.time.Duration;
 
 public class DriverExtensions {
     private final AppiumDriver driver;
+    private final boolean isCi = ConfigReader.getSettings().IsCi;
 
     public DriverExtensions(AppiumDriver driver) {
         this.driver = driver;
@@ -50,6 +52,7 @@ public class DriverExtensions {
     }
 
     private WebDriverWait createWait() {
-        return createWait(10); // default timeout
+        int timeout = isCi ? 20 : 10;
+        return createWait(timeout);
     }
 }

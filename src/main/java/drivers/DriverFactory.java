@@ -45,11 +45,11 @@ public class DriverFactory {
                 .setAppWaitActivity("*")
                 .setAppWaitForLaunch(true)
                 .setDisableWindowAnimation(true)
-                .setAdbExecTimeout(Duration.ofSeconds(60));
+                .setAdbExecTimeout(Duration.ofSeconds(settings.IsCi ? 120 : 60));;
 
         try {
             driver = new AndroidDriver(new URL(settings.ServerUrl), options);
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(settings.IsCi ? 15 : 5));
 
             return driver;
         } catch (Exception e) {

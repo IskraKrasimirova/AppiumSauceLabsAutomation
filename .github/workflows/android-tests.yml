@@ -29,6 +29,12 @@ jobs:
           npm install -g appium
           appium driver install uiautomator2
 
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
       - name: Run tests on emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -36,17 +42,12 @@ jobs:
           target: google_apis
           arch: x86_64
           profile: pixel_7
-          emulator-options: -no-snapshot -noaudio -no-window -no-boot-anim -gpu swiftshader_indirect
+          emulator-options: -no-snapshot -noaudio -no-window -no-boot-anim
           disable-animations: true
           script: |
-            # Start logcat
             nohup adb logcat > logcat.log 2>&1 &
-
-            # Start Appium
             nohup appium > appium.log 2>&1 &
             sleep 5
-
-            # Maven build + test
             mvn -B clean test
 
       - name: Upload ExtentReport

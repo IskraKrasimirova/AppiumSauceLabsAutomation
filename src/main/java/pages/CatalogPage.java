@@ -44,6 +44,10 @@ public class CatalogPage extends BasePage {
         return productsHeader().isDisplayed() && productsList().isDisplayed();
     }
 
+    public int getVisibleProductCount() {
+        return productImages().size();
+    }
+
     public String getProductName(int index) {
         return productTitles().get(index).getText();
     }

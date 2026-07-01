@@ -75,15 +75,16 @@ public class ReviewOrderTests extends BaseTest {
 
         // 5) Review Order Page
         assertTrue(reviewOrderPage.isAtReviewOrderPage());
-
-        assertTrue(reviewOrderPage.getProductsCount() > 0);
-        assertTrue(reviewOrderPage.isDeliveryAddressVisible());
-        assertTrue(reviewOrderPage.isPaymentDetailsVisible());
-        assertNotNull(reviewOrderPage.getDeliveryInfo());
-        assertNotNull(reviewOrderPage.getDeliveryPrice());
-        assertNotNull(reviewOrderPage.getItemsCountText());
-        assertNotNull(reviewOrderPage.getTotalPrice());
-        assertTrue(reviewOrderPage.isPlaceOrderButtonVisible());
+        assertAll("Order validation",
+                () -> assertTrue(reviewOrderPage.getProductsCount() > 0),
+                () -> assertTrue(reviewOrderPage.isDeliveryAddressVisible()),
+                () -> assertTrue(reviewOrderPage.isPaymentDetailsVisible()),
+                () -> assertNotNull(reviewOrderPage.getDeliveryInfo()),
+                () -> assertNotNull(reviewOrderPage.getDeliveryPrice()),
+                () -> assertNotNull(reviewOrderPage.getItemsCountText()),
+                () -> assertNotNull(reviewOrderPage.getTotalPrice()),
+                () -> assertTrue(reviewOrderPage.isPlaceOrderButtonVisible())
+        );
     }
 
     @Test
@@ -134,6 +135,7 @@ public class ReviewOrderTests extends BaseTest {
         CheckoutData checkoutData = CheckoutDataFactory.createValidCheckoutData();
         checkoutPage.fillShippingAddress(checkoutData);
         checkoutPage.goToPayment();
+        assertTrue(paymentPage.isAtPaymentPage());
 
         PaymentData paymentData = PaymentDataFactory.createValidPaymentData();
         paymentPage.fillPaymentData(paymentData);
@@ -146,15 +148,16 @@ public class ReviewOrderTests extends BaseTest {
         assertEquals(2, reviewOrderPage.getProductsCount());
         assertEquals(2, reviewOrderPage.getTotalItemsCount());
 
-        // Validate names
+        // Validate products names and prices
         List<String> names = reviewOrderPage.getAllProductNames();
-        assertTrue(names.contains(firstName));
-        assertTrue(names.contains(secondName));
-
-        // Validate prices
         List<String> prices = reviewOrderPage.getAllProductPrices();
-        assertTrue(prices.contains(firstPrice));
-        assertTrue(prices.contains(secondPrice));
+
+        assertAll("Product names and prices validation",
+                () -> assertTrue(names.contains(firstName)),
+                () -> assertTrue(names.contains(secondName)),
+                () -> assertTrue(prices.contains(firstPrice)),
+                () -> assertTrue(prices.contains(secondPrice))
+        );
     }
 
     @Test
@@ -193,10 +196,12 @@ public class ReviewOrderTests extends BaseTest {
 
         // 5) Review Order Page
         assertTrue(reviewOrderPage.isAtReviewOrderPage());
-        assertTrue(reviewOrderPage.isDeliveryAddressVisible());
-        assertTrue(reviewOrderPage.isDeliveryAddressTextVisible());
-        assertTrue(reviewOrderPage.isPaymentDetailsVisible());
-        assertTrue(reviewOrderPage.isBillingAddressMessageVisible());
+        assertAll("Order validation",
+                () -> assertTrue(reviewOrderPage.isDeliveryAddressVisible()),
+                () -> assertTrue(reviewOrderPage.isDeliveryAddressTextVisible()),
+                () -> assertTrue(reviewOrderPage.isPaymentDetailsVisible()),
+                () -> assertTrue(reviewOrderPage.isBillingAddressMessageVisible())
+        );
 
         // Actual UI values
         String actualFullName = reviewOrderPage.getFullName();
@@ -210,10 +215,12 @@ public class ReviewOrderTests extends BaseTest {
         String expectedCityAndState = checkoutData.city + ", " + checkoutData.state;
         String expectedCountryAndZipCode = checkoutData.country + ", " + checkoutData.zipCode;
 
-        assertEquals(expectedFullName, actualFullName);
-        assertEquals(expectedAddress1, actualAddress1);
-        assertEquals(expectedCityAndState, actualCityAndState);
-        assertEquals(expectedCountryAndZipCode, actualCountryAndZipCode);
+        assertAll("Delivery Address validation",
+                () -> assertEquals(expectedFullName, actualFullName),
+                () -> assertEquals(expectedAddress1, actualAddress1),
+                () -> assertEquals(expectedCityAndState, actualCityAndState),
+                () -> assertEquals(expectedCountryAndZipCode, actualCountryAndZipCode)
+        );
     }
 
     @Test
@@ -265,10 +272,12 @@ public class ReviewOrderTests extends BaseTest {
         String expectedCityAndState = shippingData.city + ", " + shippingData.state;
         String expectedCountryAndZipCode = shippingData.country + ", " + shippingData.zipCode;
 
-        assertEquals(expectedFullName, reviewOrderPage.getFullName());
-        assertEquals(expectedAddress, reviewOrderPage.getAddressLine());
-        assertEquals(expectedCityAndState, reviewOrderPage.getCityAndState());
-        assertEquals(expectedCountryAndZipCode, reviewOrderPage.getCountryAndZip());
+        assertAll("Delivery Address validation",
+                () -> assertEquals(expectedFullName, reviewOrderPage.getFullName()),
+                () -> assertEquals(expectedAddress, reviewOrderPage.getAddressLine()),
+                () -> assertEquals(expectedCityAndState, reviewOrderPage.getCityAndState()),
+                () -> assertEquals(expectedCountryAndZipCode, reviewOrderPage.getCountryAndZip())
+        );
 
         // Billing Address (should match billingData, including address2)
         assertTrue(reviewOrderPage.isBillingAddressTextVisible());
@@ -277,10 +286,12 @@ public class ReviewOrderTests extends BaseTest {
         String expectedBillingCityAndState = billingData.city + "," + billingData.state;
         String expectedBillingZipCodeAndCountry = billingData.zipCode + "," + billingData.country;
 
-        assertEquals(expectedBillingFullName, reviewOrderPage.getBillingFullName());
-        assertEquals(expectedBillingAddress, reviewOrderPage.getBillingAddress());
-        assertEquals(expectedBillingCityAndState, reviewOrderPage.getBillingCityAndState());
-        assertEquals(expectedBillingZipCodeAndCountry, reviewOrderPage.getBillingZipCodeAndCountry());
+        assertAll("Billing Address validation",
+                () -> assertEquals(expectedBillingFullName, reviewOrderPage.getBillingFullName()),
+                () -> assertEquals(expectedBillingAddress, reviewOrderPage.getBillingAddress()),
+                () -> assertEquals(expectedBillingCityAndState, reviewOrderPage.getBillingCityAndState()),
+                () -> assertEquals(expectedBillingZipCodeAndCountry, reviewOrderPage.getBillingZipCodeAndCountry())
+        );
     }
 
     @Test
@@ -469,7 +480,7 @@ public class ReviewOrderTests extends BaseTest {
         List<String> productPrices = reviewOrderPage.getAllProductPrices();
 
         BigDecimal expectedFirstPrice = parsePrice(firstPriceText);
-        BigDecimal expectedSecondPrice =parsePrice(secondPriceText);
+        BigDecimal expectedSecondPrice = parsePrice(secondPriceText);
 
         BigDecimal actualFirstPrice = parsePrice(productPrices.get(0));
         BigDecimal actualSecondPrice = parsePrice(productPrices.get(1));

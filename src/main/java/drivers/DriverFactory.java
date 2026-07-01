@@ -30,10 +30,10 @@ public class DriverFactory {
     private static AndroidDriver createDriver() {
         AppiumSettings settings = ConfigReader.getSettings();
 
-        String appPath = Objects.requireNonNull(
-                DriverFactory.class.getClassLoader().getResource(settings.App),
-                "APK file not found in resources!"
-        ).getPath().replaceFirst("^/", "");
+        // Always use Maven output directory for APK
+        String appPath = System.getProperty("user.dir") +
+                "/target/classes/" +
+                settings.App;
 
         var options = new UiAutomator2Options()
                 .setAutomationName(settings.AutomationName)

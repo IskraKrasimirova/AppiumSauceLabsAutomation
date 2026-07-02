@@ -51,8 +51,15 @@ public class DriverFactory {
 
         try {
             driver = new AndroidDriver(new URL(settings.ServerUrl), options);
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(settings.IsCi ? 10 : 5));
 
+            // Appium startup sleep waiting for stable application, OS process
+            if (settings.IsCi) {
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException ignored) {}
+            }
+
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(settings.IsCi ? 10 : 5));
             return driver;
         } catch (Exception e) {
             throw new RuntimeException("Invalid Appium server URL: " + settings.ServerUrl, e);

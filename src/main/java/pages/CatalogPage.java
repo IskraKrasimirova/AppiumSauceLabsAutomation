@@ -39,13 +39,13 @@ public class CatalogPage extends BasePage {
         return new NavBar(driver);
     }
 
-    /*public boolean isAtCatalogPage() {
-        int attempts = 4;
+    public boolean isAtCatalogPage() {
+        int attempts = 2;
         int sleepBetweenAttempts = 4000;
 
         for (int i = 0; i < attempts; i++) {
             try {
-                driverExt.waitUntilVisible(productsHeaderLocator, 15); // custom 15 sec wait ONLY for CatalogPage
+                driverExt.waitUntilVisible(productsHeaderLocator);
                 return productsHeader().isDisplayed() && productsList().isDisplayed();
             } catch (Exception e) {
                 System.out.println("DEBUG isAtCatalogPage attempt " + (i + 1) + " failed: " + e.getMessage());
@@ -58,7 +58,7 @@ public class CatalogPage extends BasePage {
         }
 
         return false;
-    }*/
+    }
 
     /*public boolean isAtCatalogPage() {
         int attempts = 3;
@@ -105,11 +105,11 @@ public class CatalogPage extends BasePage {
         return false;
     }*/
 
-    public boolean isAtCatalogPage() {
+    /*public boolean isAtCatalogPage() {
         driverExt.waitUntilVisible(productsHeaderLocator);
 
         return productsHeader().isDisplayed() && productsList().isDisplayed();
-    }
+    }*/
 
     /*public boolean isAtCatalogPage() {
         System.out.println("DEBUG: Checking if Catalog page is visible...");

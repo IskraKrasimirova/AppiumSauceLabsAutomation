@@ -52,7 +52,7 @@ public class DriverExtensions {
     }
 
     private WebDriverWait createWait() {
-        int timeout = isCi ? 20 : 10;
+        int timeout = isCi ? 25 : 10;
         return createWait(timeout);
     }
 }

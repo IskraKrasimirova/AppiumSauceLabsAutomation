@@ -53,14 +53,14 @@ public class CatalogPage extends BasePage {
                 if (i < attempts - 1) {
                     try { // CI‑specific stabilization pattern
                         Thread.sleep(2000);
-                    } catch (InterruptedException ignored) {}
+                    } catch (InterruptedException ignored) {
+                    }
                 }
             }
         }
 
         return false;
     }
-
 
     /*public boolean isAtCatalogPage() {
         driverExt.waitUntilVisible(productsHeaderLocator);

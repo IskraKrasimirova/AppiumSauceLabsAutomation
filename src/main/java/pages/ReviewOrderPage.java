@@ -14,6 +14,8 @@ public class ReviewOrderPage extends BasePage {
     private final By paymentDetailsLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/billingLL");
     private final By billingAddressLocator = AppiumBy.xpath("//android.widget.TextView[@text=\"Billing Address\"]");
     private final By billingAddressMessageLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/billingAddressTV");
+    private final By billingCityAndStateLocator = By.id("com.saucelabs.mydemoapp.android:id/billingCityAndStateTV");
+    private final By billingZipAndCountryLocator = By.id("com.saucelabs.mydemoapp.android:id/billingZipAndCountryTV");
     private final By paymentFullNamedLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/cardHolderTV");
     private final By paymentCardNumberLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/cardNumberTV");
     private final By paymentExpirationDateLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/expirationDateTV");
@@ -131,11 +133,11 @@ public class ReviewOrderPage extends BasePage {
     }
 
     private WebElement billingCityAndStateText() {
-        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/billingCityAndStateTV"));
+        return driver.findElement(billingCityAndStateLocator);
     }
 
     private WebElement billingZipCodeAndCountryText() {
-        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/billingZipAndCountryTV"));
+        return driver.findElement(billingZipAndCountryLocator);
     }
 
     public ReviewOrderPage(AppiumDriver driver) {
@@ -264,12 +266,12 @@ public class ReviewOrderPage extends BasePage {
     }
 
     public String getBillingCityAndState() {
-        scrollUntilVisible(billingAddressLocator, 5);
+        scrollUntilVisible(billingCityAndStateLocator, 5);
         return billingCityAndStateText().getText();
     }
 
     public String getBillingZipCodeAndCountry() {
-        scrollUntilVisible(billingAddressLocator, 5);
+        scrollUntilVisible(billingZipAndCountryLocator, 5);
         return billingZipCodeAndCountryText().getText();
     }
 

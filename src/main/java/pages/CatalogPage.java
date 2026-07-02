@@ -40,8 +40,8 @@ public class CatalogPage extends BasePage {
     }
 
     public boolean isAtCatalogPage() {
-        int attempts = 3;
-        int sleepBetweenAttempts = 3000;
+        int attempts = 4;
+        int sleepBetweenAttempts = 4000;
 
         for (int i = 0; i < attempts; i++) {
             try {
@@ -50,7 +50,9 @@ public class CatalogPage extends BasePage {
             } catch (Exception e) {
                 System.out.println("DEBUG isAtCatalogPage attempt " + (i + 1) + " failed: " + e.getMessage());
                 if (i < attempts - 1) {
-                    try { Thread.sleep(sleepBetweenAttempts); } catch (InterruptedException ignored) {}
+                    try {
+                        Thread.sleep(sleepBetweenAttempts);
+                    } catch (InterruptedException ignored) {}
                 }
             }
         }

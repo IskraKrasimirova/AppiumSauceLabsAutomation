@@ -16,20 +16,23 @@ jobs:
       fail-fast: false
       matrix:
         suite: [
-          CatalogPageTests,
-          CheckoutTests,
           PaymentTests,
+          CatalogPageTests,
           GuestCartTests,
-          GuestCheckoutFlowTests,
-          LoggedInUserCartTests,
-          LoggedInUserCheckoutFlowTests,
+
+          ReviewOrderTests,
           LoginTests,
           LogoutTests,
-          OrderCompletePageTests,
+
+          GuestCheckoutFlowTests,
           ProductDetailsPageTests,
-          ReviewOrderTests
+          OrderCompletePageTests,
+
+          LoggedInUserCheckoutFlowTests,
+          LoggedInUserCartTests,
+          CheckoutTests
         ]
-      max-parallel: 4
+      max-parallel: 3
 
     steps:
       - name: Checkout repository

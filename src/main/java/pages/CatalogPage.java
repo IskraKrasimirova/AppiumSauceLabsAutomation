@@ -45,7 +45,7 @@ public class CatalogPage extends BasePage {
 
         for (int i = 0; i < attempts; i++) {
             try {
-                driverExt.waitUntilVisible(productsHeaderLocator, 10); // custom 10 sec wait ONLY for CatalogPage
+                driverExt.waitUntilVisible(productsHeaderLocator, 15); // custom 15 sec wait ONLY for CatalogPage
                 return productsHeader().isDisplayed() && productsList().isDisplayed();
             } catch (Exception e) {
                 System.out.println("DEBUG isAtCatalogPage attempt " + (i + 1) + " failed: " + e.getMessage());

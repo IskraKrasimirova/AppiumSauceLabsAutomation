@@ -19,15 +19,13 @@ jobs:
           PaymentTests,
           CatalogPageTests,
           GuestCartTests,
-
           ReviewOrderTests,
           LoginTests,
           LogoutTests,
-
           GuestCheckoutFlowTests,
           ProductDetailsPageTests,
           OrderCompletePageTests,
-
+          PaymentBillingTests,
           LoggedInUserCheckoutFlowTests,
           LoggedInUserCartTests,
           CheckoutTests

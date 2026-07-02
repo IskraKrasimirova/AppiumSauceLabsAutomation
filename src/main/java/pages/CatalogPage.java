@@ -39,7 +39,7 @@ public class CatalogPage extends BasePage {
         return new NavBar(driver);
     }
 
-    public boolean isAtCatalogPage() {
+    /*public boolean isAtCatalogPage() {
         int attempts = 2;
         int sleepBetweenAttempts = 4000;
 
@@ -58,7 +58,7 @@ public class CatalogPage extends BasePage {
         }
 
         return false;
-    }
+    }*/
 
     /*public boolean isAtCatalogPage() {
         int attempts = 3;
@@ -111,7 +111,7 @@ public class CatalogPage extends BasePage {
         return productsHeader().isDisplayed() && productsList().isDisplayed();
     }*/
 
-    /*public boolean isAtCatalogPage() {
+    public boolean isAtCatalogPage() {
         System.out.println("DEBUG: Checking if Catalog page is visible...");
 
         try {
@@ -123,7 +123,7 @@ public class CatalogPage extends BasePage {
             System.out.println("DEBUG: Catalog page NOT visible. Exception: " + e);
             return false;
         }
-    }*/
+    }
 
     public int getVisibleProductCount() {
         return productImages().size();

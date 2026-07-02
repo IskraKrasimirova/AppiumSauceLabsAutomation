@@ -39,7 +39,7 @@ public class DriverFactory {
                 .setAutomationName(settings.AutomationName)
                 .setDeviceName(settings.DeviceName)
                 .setPlatformName(settings.PlatformName)
-                .setPlatformVersion(settings.IsCi ? "14" : settings.PlatformVersion)
+                .setPlatformVersion(settings.IsCi ? "13" : settings.PlatformVersion)
                 .setApp(appPath)
                 .setNoReset(settings.NoReset)
                 .setAppWaitActivity("*")

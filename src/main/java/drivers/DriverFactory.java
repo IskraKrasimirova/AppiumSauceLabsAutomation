@@ -47,7 +47,7 @@ public class DriverFactory {
                 .setDisableWindowAnimation(true)
                 .setAdbExecTimeout(Duration.ofSeconds(settings.IsCi ? 120 : 60))
                 .setNewCommandTimeout(Duration.ofSeconds(settings.IsCi ? 300 : 60))
-                .setAppWaitDuration(Duration.ofMillis(settings.IsCi ? 30000 : 10000));
+                .setAppWaitDuration(Duration.ofMillis(settings.IsCi ? 60000 : 10000));
 
         try {
             driver = new AndroidDriver(new URL(settings.ServerUrl), options);

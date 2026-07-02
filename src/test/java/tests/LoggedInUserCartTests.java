@@ -28,14 +28,14 @@ public class LoggedInUserCartTests extends BaseTest {
         loginPage = new LoginPage(driver);
 
         // Login first
-        assertTrue(catalogPage.isAtCatalogPage());
+        assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
         catalogPage.navBar().openMenu();
         catalogPage.navBar().menu().openLogin();
 
         assertTrue(loginPage.isAtLoginPage());
         loginPage.loginWithValidCredentials();
 
-        assertTrue(catalogPage.isAtCatalogPage());
+        assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
     }
 
     @Test

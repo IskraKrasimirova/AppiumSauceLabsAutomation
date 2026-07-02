@@ -35,7 +35,7 @@ public class OrderCompletePageTests extends BaseTest {
         reviewOrderPage = new ReviewOrderPage(driver);
         orderCompletePage = new OrderCompletePage(driver);
 
-        assertTrue(catalogPage.isAtCatalogPage());
+        assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
 
         // Add one product
         int index = getStableProductIndex();

@@ -29,7 +29,7 @@ public class GuestCartTests extends BaseTest {
     @Test
     @Tag("smoke")
     public void guestCanAddProductToCart() {
-        assertTrue(catalogPage.isAtCatalogPage());
+        assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
 
         int index = getStableProductIndex();
         catalogPage.scrollToProduct(index);
@@ -67,7 +67,7 @@ public class GuestCartTests extends BaseTest {
     @Test
     @Tag("regression")
     public void guestCanAddMultipleProductsToCart() {
-        assertTrue(catalogPage.isAtCatalogPage());
+        assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
 
         int[] indices = getTwoStableProductIndices();
         int first = indices[0];
@@ -118,7 +118,7 @@ public class GuestCartTests extends BaseTest {
     @Test
     @Tag("regression")
     public void guestCanIncreaseAndDecreaseQuantityOfProductInCart() {
-        assertTrue(catalogPage.isAtCatalogPage());
+        assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
 
         int index = getStableProductIndex();
         catalogPage.scrollToProduct(index);
@@ -158,7 +158,7 @@ public class GuestCartTests extends BaseTest {
     @Test
     @Tag("regression")
     public void guestCanRemoveItemFromCart() {
-        assertTrue(catalogPage.isAtCatalogPage());
+        assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
 
         int index = getStableProductIndex();
         catalogPage.scrollToProduct(index);
@@ -186,7 +186,7 @@ public class GuestCartTests extends BaseTest {
     @Test
     @Tag("regression")
     public void guestCanIncreaseQuantityFromProductDetailsPage() {
-        assertTrue(catalogPage.isAtCatalogPage());
+        assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
 
         int index = getStableProductIndex();
         catalogPage.scrollToProduct(index);
@@ -225,7 +225,7 @@ public class GuestCartTests extends BaseTest {
     @Test
     @Tag("regression")
     public void guestIsRedirectedToLoginWhenProceedingToCheckout() {
-        assertTrue(catalogPage.isAtCatalogPage());
+        assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
 
         int index = getStableProductIndex();
         catalogPage.scrollToProduct(index);
@@ -251,7 +251,7 @@ public class GuestCartTests extends BaseTest {
     @Test
     @Tag("regression")
     public void cartPersistsAfterLogin() {
-        assertTrue(catalogPage.isAtCatalogPage());
+        assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
 
         int index = getStableProductIndex();
         catalogPage.scrollToProduct(index);

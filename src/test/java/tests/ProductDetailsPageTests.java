@@ -23,7 +23,7 @@ public class ProductDetailsPageTests extends BaseTest {
         catalogPage = new CatalogPage(driver);
         productDetailsPage = new ProductDetailsPage(driver);
 
-        assertTrue(catalogPage.isAtCatalogPage());
+        assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
 
         int index = getStableProductIndex();
         catalogPage.scrollToProduct(index);

@@ -45,7 +45,7 @@ public class ReviewOrderTests extends BaseTest {
     @Tag("smoke")
     public void reviewOrderPageLoadsCorrectly() {
         // 1) Add product
-        assertTrue(catalogPage.isAtCatalogPage());
+        assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
 
         int index = getStableProductIndex();
         catalogPage.scrollToProduct(index);
@@ -92,7 +92,7 @@ public class ReviewOrderTests extends BaseTest {
     @Test
     @Tag("regression")
     public void reviewOrderPageDisplaysCorrectProducts() {
-        assertTrue(catalogPage.isAtCatalogPage());
+        assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
 
         // Select two stable products
         int[] indices = getTwoStableProductIndices();
@@ -166,7 +166,7 @@ public class ReviewOrderTests extends BaseTest {
     @Tag("regression")
     public void reviewOrderPageDisplaysCorrectDeliveryAddress() {
         // 1) Add product
-        assertTrue(catalogPage.isAtCatalogPage());
+        assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
 
         int index = getStableProductIndex();
         catalogPage.scrollToProduct(index);
@@ -229,7 +229,7 @@ public class ReviewOrderTests extends BaseTest {
     @Tag("regression")
     public void reviewOrderPageDisplaysCorrectDeliveryAndBillingAddressesWhenAreDifferent() {
         // 1) Add product
-        assertTrue(catalogPage.isAtCatalogPage());
+        assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
 
         int index = getStableProductIndex();
         catalogPage.scrollToProduct(index);
@@ -300,7 +300,7 @@ public class ReviewOrderTests extends BaseTest {
     @Tag("regression")
     public void reviewOrderPageDisplaysCorrectPaymentDetails() {
         // 1) Add product
-        assertTrue(catalogPage.isAtCatalogPage());
+        assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
 
         int index = getStableProductIndex();
         catalogPage.scrollToProduct(index);
@@ -349,7 +349,7 @@ public class ReviewOrderTests extends BaseTest {
     @Test
     @Tag("regression")
     public void reviewOrderPageDisplaysCorrectTotals() {
-        assertTrue(catalogPage.isAtCatalogPage());
+        assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
 
         // Select two stable products
         int[] indices = getTwoStableProductIndices();
@@ -420,7 +420,7 @@ public class ReviewOrderTests extends BaseTest {
     @Test
     @Tag("regression")
     public void userCanPlaceOrderSuccessfully() {
-        assertTrue(catalogPage.isAtCatalogPage());
+        assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
 
         // Select two stable products
         int[] indices = getTwoStableProductIndices();

@@ -44,7 +44,7 @@ public class GuestCheckoutFlowTests extends BaseTest {
     @Tag("regression")
     public void guestCanCompleteFullCheckoutFlow() {
         // 1) Catalog
-        assertTrue(catalogPage.isAtCatalogPage());
+        assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
 
         int index = getStableProductIndex();
         catalogPage.scrollToProduct(index);
@@ -105,7 +105,7 @@ public class GuestCheckoutFlowTests extends BaseTest {
     @Tag("regression")
     public void guestCanCompleteCheckoutFlowWithMultipleProducts() {
         // 1) Catalog
-        assertTrue(catalogPage.isAtCatalogPage());
+        assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
 
         int[] indices = getTwoStableProductIndices();
         int first = indices[0];

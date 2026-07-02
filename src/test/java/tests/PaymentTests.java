@@ -37,7 +37,7 @@ public class PaymentTests extends BaseTest {
         reviewOrderPage = new ReviewOrderPage(driver);
 
         // Navigate to payment
-        assertTrue(catalogPage.isAtCatalogPage());
+        assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
         catalogPage.scrollToProduct(0);
         catalogPage.openProductDetails(0);
 

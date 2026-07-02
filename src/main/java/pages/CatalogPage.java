@@ -39,6 +39,27 @@ public class CatalogPage extends BasePage {
     }
 
     public boolean isAtCatalogPage() {
+        int attempts = 3;
+        int sleepBetweenAttempts = 5000;
+
+        for (int i = 0; i < attempts; i++) {
+            try {
+                driverExt.waitUntilVisible(productsHeaderLocator);
+                return productsHeader().isDisplayed() && productsList().isDisplayed();
+            } catch (Exception e) {
+                System.out.println("DEBUG isAtCatalogPage attempt " + (i + 1) + " failed: " + e.getMessage());
+                if (i < attempts - 1) {
+                    try {
+                        Thread.sleep(sleepBetweenAttempts);
+                    } catch (InterruptedException ignored) {}
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /*public boolean isAtCatalogPage() {
         int attempts = 2; // 1 normal run + 1 retry
 
         for (int i = 0; i < attempts; i++) {
@@ -60,7 +81,7 @@ public class CatalogPage extends BasePage {
         }
 
         return false;
-    }
+    }*/
 
     /*public boolean isAtCatalogPage() {
         driverExt.waitUntilVisible(productsHeaderLocator);

@@ -20,7 +20,7 @@ public class LogoutTests extends BaseTest {
         catalogPage = new CatalogPage(driver);
         loginPage = new LoginPage(driver);
 
-        assertTrue(catalogPage.isAtCatalogPage());
+        assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
 
         catalogPage.navBar().openMenu();
         catalogPage.navBar().menu().openLogin();
@@ -28,7 +28,7 @@ public class LogoutTests extends BaseTest {
         assertTrue(loginPage.isAtLoginPage());
         loginPage.loginWithValidCredentials();
 
-        assertTrue(catalogPage.isAtCatalogPage());
+        assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
     }
 
     @Test

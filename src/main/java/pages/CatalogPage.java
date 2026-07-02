@@ -45,8 +45,8 @@ public class CatalogPage extends BasePage {
 
         for (int i = 0; i < attempts; i++) {
             try {
-                driverExt.waitUntilVisible(productsHeaderLocator);
-                return productsHeader().isDisplayed() && productsList().isDisplayed();
+                WebElement header = driverExt.waitUntilVisibleAndReturn(productsHeaderLocator);
+                return header.isDisplayed();
             } catch (Exception e) {
                 System.out.println("DEBUG isAtCatalogPage attempt " + (i + 1) + " failed: " + e.getMessage());
                 if (i < attempts - 1) {

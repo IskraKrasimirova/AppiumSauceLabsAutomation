@@ -51,6 +51,11 @@ public class DriverExtensions {
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
+    public WebElement waitUntilVisibleAndReturn(By locator) {
+        WebDriverWait wait = createWait();
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
     private WebDriverWait createWait(int timeoutSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds));
         wait.ignoring(NoSuchElementException.class);

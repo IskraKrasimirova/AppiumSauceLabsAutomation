@@ -41,7 +41,7 @@ public class DriverFactory {
                 .setPlatformName(settings.PlatformName)
                 .setPlatformVersion(settings.PlatformVersion)
                 .setApp(appPath)
-                .setNoReset(settings.NoReset)
+                .setNoReset(settings.IsCi ? true : settings.NoReset)
                 .setAppWaitActivity("*")
                 .setAppWaitForLaunch(true)
                 .setDisableWindowAnimation(true)

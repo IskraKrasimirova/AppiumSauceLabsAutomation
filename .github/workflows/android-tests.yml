@@ -17,18 +17,18 @@ jobs:
       matrix:
         suite: [
           PaymentTests,
-            CatalogPageTests,
-            GuestCartTests,
-            ReviewOrderTests,
-            LoginTests,
-            GuestCheckoutFlowTests,
-            ProductDetailsPageTests,
-            OrderCompletePageTests,
-            LogoutTests,
-            PaymentBillingTests,
-            LoggedInUserCheckoutFlowTests,
-            LoggedInUserCartTests,
-            CheckoutTests
+          CatalogPageTests,
+          GuestCartTests,
+          ReviewOrderTests,
+          LoginTests,
+          LogoutTests,
+          GuestCheckoutFlowTests,
+          ProductDetailsPageTests,
+          OrderCompletePageTests,
+          PaymentBillingTests,
+          LoggedInUserCheckoutFlowTests,
+          LoggedInUserCartTests,
+          CheckoutTests
         ]
       max-parallel: 3
 

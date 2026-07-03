@@ -55,11 +55,11 @@ public class DriverFactory {
             // Appium startup sleep waiting for stable application, OS process
             if (settings.IsCi) {
                 try {
-                    Thread.sleep(15000);
+                    Thread.sleep(20000);
                 } catch (InterruptedException ignored) {}
             }
 
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(settings.IsCi ? 10 : 5));
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
             return driver;
         } catch (Exception e) {
             throw new RuntimeException("Invalid Appium server URL: " + settings.ServerUrl, e);

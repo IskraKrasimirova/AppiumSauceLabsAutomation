@@ -25,10 +25,10 @@ jobs:
           GuestCheckoutFlowTests,
           ProductDetailsPageTests,
           OrderCompletePageTests,
-          PaymentBillingTests,
           LoggedInUserCheckoutFlowTests,
           LoggedInUserCartTests,
-          CheckoutTests
+          CheckoutTests,
+          PaymentBillingTests
         ]
       max-parallel: 3
 

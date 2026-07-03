@@ -14,6 +14,8 @@ public class ReviewOrderPage extends BasePage {
     private final By paymentDetailsLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/billingLL");
     private final By billingAddressLocator = AppiumBy.xpath("//android.widget.TextView[@text=\"Billing Address\"]");
     private final By billingAddressMessageLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/billingAddressTV");
+    private final By billingFullNameLocator = By.id("com.saucelabs.mydemoapp.android:id/billFullnameTV");
+    private final By billingAddressLineLocator = By.id("com.saucelabs.mydemoapp.android:id/billaddressTV");
     private final By billingCityAndStateLocator = By.id("com.saucelabs.mydemoapp.android:id/billingCityAndStateTV");
     private final By billingZipAndCountryLocator = By.id("com.saucelabs.mydemoapp.android:id/billingZipAndCountryTV");
     private final By paymentFullNamedLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/cardHolderTV");
@@ -125,11 +127,11 @@ public class ReviewOrderPage extends BasePage {
     }
 
     private WebElement billingFullNameText() {
-        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/billFullnameTV"));
+        return driver.findElement(billingFullNameLocator);
     }
 
     private WebElement billingAddressLineText() {
-        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/billaddressTV"));
+        return driver.findElement(billingAddressLineLocator);
     }
 
     private WebElement billingCityAndStateText() {
@@ -256,12 +258,12 @@ public class ReviewOrderPage extends BasePage {
     }
 
     public String getBillingFullName() {
-        scrollUntilVisible(billingAddressLocator, 5);
+        scrollUntilVisible(billingFullNameLocator, 5);
         return billingFullNameText().getText();
     }
 
     public String getBillingAddress() {
-        scrollUntilVisible(billingAddressLocator, 5);
+        scrollUntilVisible(billingAddressLineLocator, 5);
         return billingAddressLineText().getText();
     }
 

@@ -10,7 +10,7 @@ on:
 jobs:
   ui-tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 45
 
     strategy:
       fail-fast: false
@@ -70,11 +70,11 @@ jobs:
             sleep 25
             mvn -B -Dtest=${{ matrix.suite }} test
 
-      - name: Upload HTML report (single artifact)
+      - name: Upload HTML report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: extent-reports
+          name: extent-report-${{ matrix.suite }}
           path: Reports/TestReport.html
 
       - name: Upload screenshots
@@ -99,17 +99,21 @@ jobs:
     if: always()
 
     steps:
-      - name: Download all ExtentReports
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
-          name: extent-reports
           path: merged-reports
 
-      - name: Merge ExtentReports
+      - name: Build project (copy dependencies)
+        run: mvn -B -DskipTests package dependency:copy-dependencies
+
+      - name: Merge Extent Reports
         run: |
           mkdir final
-          npm install -g extent-merge
-          extent-merge merged-reports final/CombinedReport.html
+          java -cp "target/classes:target/test-classes:target/dependency/*" reporting.ExtentMerger merged-reports final/CombinedReport.html
 
       - name: Upload merged report
         uses: actions/upload-artifact@v4

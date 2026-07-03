@@ -59,7 +59,7 @@ public class DriverFactory {
                 } catch (InterruptedException ignored) {}
             }
 
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(settings.IsCi ? 1 : 5));
             return driver;
         } catch (Exception e) {
             throw new RuntimeException("Invalid Appium server URL: " + settings.ServerUrl, e);

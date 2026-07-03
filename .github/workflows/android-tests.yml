@@ -67,7 +67,7 @@ jobs:
           script: |
             nohup adb logcat > logcat.log 2>&1 &
             nohup appium > appium.log 2>&1 &
-            sleep 10
+            sleep 25
             mvn -B -Dtest=${{ matrix.suite }} test
 
       - name: Upload HTML report (single artifact)

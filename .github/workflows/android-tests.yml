@@ -32,6 +32,9 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Find aspectjweaver
+        run: find ~/.m2 -name "aspectjweaver*.jar" 2>/dev/null
+
       - name: Install Node & Appium
         run: |
           sudo apt-get update

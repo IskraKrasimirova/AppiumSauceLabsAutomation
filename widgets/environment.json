@@ -1,1 +1,1 @@
-[]
+[{"values":["Pixel 7"],"name":"Device"},{"values":["Android 13"],"name":"OS"},{"values":["Level=33"],"name":"API"},{"values":["Appium + JUnit5 (Java)"],"name":"Framework"},{"values":["Tool=Maven"],"name":"Build"},{"values":["GitHub Actions"],"name":"Executor"}]

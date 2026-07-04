@@ -1,90 +1,93 @@
 package reporting;
 
 import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 
-import java.io.File;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class ExtentMerger {
-    public static void main(String[] args) {
-        if (args.length < 2) {
-            System.out.println("Usage: ExtentMerger <inputDir> <outputFile>");
+    private static final Pattern EXTENT_JSON_PATTERN =
+            Pattern.compile("window.__extent__\\s*=\\s*(\\{.*?\\});", Pattern.DOTALL);
+
+    public static void main(String[] args) throws Exception {
+        if (args.length != 2) {
+            System.err.println("Usage: ExtentMerger <input-folder> <output-file>");
             return;
         }
 
-        merge(args[0], args[1]);
-    }
+        Path inputDir = Paths.get(args[0]);
+        Path outputFile = Paths.get(args[1]);
 
-    public static void merge(String inputDir, String outputFile) {
-        ExtentReports extent = new ExtentReports();
-        ExtentSparkReporter spark = new ExtentSparkReporter(outputFile);
-        extent.attachReporter(spark);
+        List<JSONObject> allTests = new ArrayList<>();
 
-        File folder = new File(inputDir);
-        File[] files = folder.listFiles((dir, name) -> name.endsWith(".html"));
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(inputDir, "*.html")) {
+            for (Path htmlFile : stream) {
+                System.out.println("Processing: " + htmlFile);
 
-        if (files == null || files.length == 0) {
-            System.out.println("No HTML reports found in: " + inputDir);
-            return;
-        }
+                String html = Files.readString(htmlFile);
+                JSONObject json = extractExtentJson(html);
 
-        for (File file : files) {
-            String suiteName = file.getName().replace(".html", "");
-            ExtentTest suiteSection = extent.createTest(suiteName);
-
-            try {
-                String html = Files.readString(file.toPath(), StandardCharsets.UTF_8);
-
-                // Extract JSON inside <script id="extent-json">
-                String jsonStart = "<script id=\"extent-json\" type=\"application/json\">";
-                String jsonEnd = "</script>";
-
-                int start = html.indexOf(jsonStart);
-                int end = html.indexOf(jsonEnd, start);
-
-                if (start == -1 || end == -1) {
-                    suiteSection.warning("Could not find JSON in: " + file.getName());
+                if (json == null) {
+                    System.err.println("WARNING: No JSON found in " + htmlFile);
                     continue;
                 }
 
-                String json = html.substring(start + jsonStart.length(), end).trim();
-
-                JSONObject root = new JSONObject(json);
-                JSONArray tests = root.getJSONObject("report").getJSONArray("tests");
-
-                for (int i = 0; i < tests.length(); i++) {
-                    JSONObject t = tests.getJSONObject(i);
-
-                    String testName = t.getString("name");
-                    String statusText = t.getString("status").toLowerCase();
-
-                    Status status = Status.PASS;
-                    if (statusText.contains("fail")) status = Status.FAIL;
-                    if (statusText.contains("skip")) status = Status.SKIP;
-
-                    ExtentTest mergedTest = suiteSection.createNode(testName).log(status, "Merged from " + file.getName());
-
-                    if (t.has("exceptions")) {
-                        JSONArray exceptions = t.getJSONArray("exceptions");
-                        if (!exceptions.isEmpty()) {
-                            JSONObject ex = exceptions.getJSONObject(0);
-                            mergedTest.log(Status.FAIL, ex.getString("stacktrace"));
-                        }
+                // Extract tests array
+                if (json.has("test")) {
+                    for (Object t : json.getJSONArray("test")) {
+                        allTests.add((JSONObject) t);
                     }
                 }
-
-            } catch (Exception e) {
-                suiteSection.warning("Could not parse report: " + file.getName());
             }
         }
 
+        if (allTests.isEmpty()) {
+            System.err.println("No tests found. Combined report will be empty.");
+        }
+
+        // Build combined JSON
+        JSONObject combined = new JSONObject();
+        combined.put("test", allTests);
+
+        // Write combined JSON to temp file
+        Path tempJson = Paths.get("combined.json");
+        Files.writeString(tempJson, combined.toString(2));
+
+        // Generate final HTML report
+        ExtentSparkReporter spark = new ExtentSparkReporter(outputFile.toString());
+        ExtentReports extent = new ExtentReports();
+        extent.attachReporter(spark);
+
+        // Add tests to ExtentReports
+        for (JSONObject t : allTests) {
+            String name = t.optString("name", "Unnamed Test");
+            String status = t.optString("status", "unknown");
+
+            extent.createTest(name).log(
+                    com.aventstack.extentreports.Status.valueOf(status.toUpperCase()),
+                    "Merged from suite"
+            );
+        }
+
         extent.flush();
+        System.out.println("Merged report generated: " + outputFile);
+    }
+
+    private static JSONObject extractExtentJson(String html) {
+        Matcher matcher = EXTENT_JSON_PATTERN.matcher(html);
+        if (matcher.find()) {
+            String jsonText = matcher.group(1);
+            return new JSONObject(jsonText);
+        }
+        return null;
     }
 }

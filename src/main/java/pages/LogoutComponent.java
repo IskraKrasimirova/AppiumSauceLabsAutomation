@@ -2,11 +2,14 @@ package pages;
 
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 public class LogoutComponent extends BasePage {
+    private final By modalTitleLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/alertTitle");
+
     private WebElement modalTitle() {
-        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/alertTitle"));
+        return driver.findElement(modalTitleLocator);
     }
 
     private WebElement modalMessage() {
@@ -27,6 +30,7 @@ public class LogoutComponent extends BasePage {
 
     public boolean isVisible() {
         try {
+            driverExt.waitUntilVisible(modalTitleLocator);
             return modalTitle().isDisplayed() && modalMessage().isDisplayed();
         } catch (Exception e) {
             return false;

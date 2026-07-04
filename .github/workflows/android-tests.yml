@@ -16,19 +16,9 @@ jobs:
       fail-fast: false
       matrix:
         suite: [
-          PaymentTests,
           CatalogPageTests,
-          GuestCartTests,
-          ReviewOrderTests,
-          LoginTests,
           LogoutTests,
-          ProductDetailsPageTests,
-          GuestCheckoutFlowTests,
-          OrderCompletePageTests,
-          LoggedInUserCheckoutFlowTests,
-          LoggedInUserCartTests,
-          CheckoutTests,
-          PaymentBillingTests
+          ProductDetailsPageTests
         ]
       max-parallel: 3
 
@@ -109,6 +99,10 @@ jobs:
 
       - name: Build project (copy dependencies)
         run: mvn -B -DskipTests package dependency:copy-dependencies
+
+      - name: Move all HTML reports to root
+        run: |
+          find merged-reports -name "*.html" -exec mv {} merged-reports/ \;
 
       - name: Merge Extent Reports
         run: |

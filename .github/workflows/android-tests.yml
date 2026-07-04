@@ -135,7 +135,7 @@ jobs:
           OS=Android 13
           API Level=33
           Framework=Appium + JUnit5 (Java)
-          Build Tool=Maven
+          Build=Maven
           Executor=GitHub Actions
           EOF
 

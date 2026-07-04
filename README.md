@@ -166,6 +166,7 @@ These logs confirm that the issues originate from the hardcoded `meta[]` array i
 
 <p>These crashes are caused by the hardcoded meta[] array inside ProductCatalogFragment and are part of the demo behavior of MyDemoApp.
 The automation suite avoids unstable product indices to ensure consistent, repeatable execution.</p>
+
 ---
 
 ## 🔧 Future Improvements

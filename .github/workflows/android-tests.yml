@@ -36,7 +36,7 @@ jobs:
         run: mvn -B dependency:resolve -q
 
       - name: Find aspectjweaver
-        run: find ~/.m2 -name "aspectjweaver*.jar" 2>/dev/nulll
+        run: find ~/.m2 -name "aspectjweaver*.jar"
 
       - name: Install Node & Appium
         run: |

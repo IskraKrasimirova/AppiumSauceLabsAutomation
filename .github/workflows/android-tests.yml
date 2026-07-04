@@ -1,5 +1,8 @@
 name: Android UI Tests
 
+permissions:
+  contents: write
+
 on:
   push:
     branches: [ main ]
@@ -58,7 +61,7 @@ jobs:
             nohup adb logcat > logcat.log 2>&1 &
             nohup appium > appium.log 2>&1 &
             sleep 25
-            mvn -B -X -Dtest=${{ matrix.suite }} test 2>&1 | tail -100
+            mvn -B -Dtest=${{ matrix.suite }} test
 
       - name: Upload allure results
         if: always()

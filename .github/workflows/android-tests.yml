@@ -108,9 +108,14 @@ jobs:
 
       - name: Restore history from previous report
         run: |
-          if [ -d gh-pages/history ]; then
-          mkdir -p merged-allure-results/history
-          cp -r gh-pages/history/* merged-allure-results/history/
+          git clone --depth 1 --branch gh-pages \
+            https://github.com/${{ github.repository }}.git gh-pages || true
+          if [ -d "gh-pages/history" ]; then
+            echo "Found previous history"
+            mkdir -p merged-allure-results/history
+            cp -r gh-pages/history/* merged-allure-results/history/
+          else
+            echo "No previous history found"
           fi
 
       - name: Add executor.json

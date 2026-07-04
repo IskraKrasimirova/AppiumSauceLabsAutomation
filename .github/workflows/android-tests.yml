@@ -19,9 +19,19 @@ jobs:
       fail-fast: false
       matrix:
         suite: [
+          PaymentTests,
           CatalogPageTests,
+          GuestCartTests,
+          ReviewOrderTests,
+          LoginTests,
           LogoutTests,
-          ProductDetailsPageTests
+          ProductDetailsPageTests,
+          GuestCheckoutFlowTests,
+          OrderCompletePageTests,
+          LoggedInUserCheckoutFlowTests,
+          LoggedInUserCartTests,
+          CheckoutTests,
+          PaymentBillingTests
         ]
       max-parallel: 3
 
@@ -138,7 +148,7 @@ jobs:
           cat <<EOF > merged-allure-results/environment.properties
           Device=Pixel 7
           OS=Android 13
-          API Level=33
+          API_Level=33
           Framework=Appium + JUnit5 (Java)
           Build=Maven
           Executor=GitHub Actions

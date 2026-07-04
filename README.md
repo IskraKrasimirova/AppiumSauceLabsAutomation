@@ -5,6 +5,14 @@ The project covers end‑to‑end guest checkout flows, cart behavior, product i
 
 ---
 
+## 🔖 Badges
+
+![CI](https://github.com/IskraKrasimirova/AppiumSauceLabsAutomation/actions/workflows/android-tests.yml/badge.svg)
+
+![Allure Report](https://img.shields.io/badge/Allure-Report-blueviolet)
+
+---
+
 ## 📱 Application Under Test
 
 The tests automate the official **MyDemoApp** Android application provided by Sauce Labs.
@@ -38,7 +46,8 @@ The suite includes:
 - **JUnit 5**
 - **Selenium WebDriver**
 - **Page Object Model (POM)**
-- **ExtentReports** for reporting
+- **ExtentReports** for local HTML reporting
+- **Allure Report** (CI reporting)
 
 ---
 
@@ -84,23 +93,30 @@ All interactions follow the Page Object Model best practices:
 
 ---
 
-## 📊 Reporting
+## ⚙️ CI Pipeline (GitHub Actions)
 
-The automation framework includes full HTML reporting using **ExtentReports**.
+The project runs UI tests on **Android 13 (API 33)** in CI.
 
-### Features:
-- Automatic HTML report generation after each test run
-- Detailed logs for each test (steps, status, duration)
-- Screenshot capture on failure
-- Category grouping using JUnit 5 @Tag annotations
-- Thread-safe reporting via a custom JUnit 5 extension (ExtentReportExtension)
+### Pipeline Features
+- Build & test using Maven
+- Appium server started inside the job
+- Android emulator boot & basic health checks
+- Allure results collected as artifacts
+- Allure HTML report deployed to GitHub Pages
+- History preserved between runs (Allure Trends)
 
-The report includes:
-- Dashboard with execution statistics
-- Passed / Failed / Skipped test lists
-- Stack traces for failures
-- Embedded screenshots
-- Category-based filtering (smoke, regression, validation)
+> Locally, tests are also executed on **Android 15 (API 35)** for extended coverage.
+
+---
+
+## 📊 Allure Report
+
+The CI pipeline generates a full **Allure HTML report**, published automatically to GitHub Pages.
+
+**Live Report:**  
+https://iskrakrasimirova.github.io/AppiumSauceLabsAutomation/
+
+The report includes execution history (Trends), environment details (Pixel 7, Android 13, API 33), and direct links to the corresponding GitHub Actions runs.
 
 ---
 
@@ -154,9 +170,7 @@ The automation suite avoids unstable product indices to ensure consistent, repea
 
 ## 🔧 Future Improvements
 
-- Add retry logic for flaky UI transitions
-- Add device farm integration (BrowserStack / Sauce Labs)
-- Add parallel execution
-- Add API mocks for checkout flow
-- Add visual regression tests
+- Parallel execution (JUnit 5 + Appium multi‑session)
+- Device farm integration (BrowserStack / Sauce Labs)
+- Add test data injection via JSON/YAML
 

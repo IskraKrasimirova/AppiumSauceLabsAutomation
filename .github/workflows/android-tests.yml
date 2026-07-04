@@ -106,6 +106,39 @@ jobs:
           find allure-results-all -name "*.json" -o -name "*.xml" -o -name "*.png" | \
             xargs -I {} cp {} merged-allure-results/ 2>/dev/null || true
 
+      - name: Restore history from previous report
+        run: |
+          if [ -d gh-pages/history ]; then
+          mkdir -p merged-allure-results/history
+          cp -r gh-pages/history/* merged-allure-results/history/
+          fi
+
+      - name: Add executor.json
+        run: |
+          cat <<EOF > merged-allure-results/executor.json
+          {
+            "name": "GitHub Actions",
+            "type": "github",
+            "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+            "buildOrder": "${{ github.run_number }}",
+            "buildName": "Run ${{ github.run_number }}",
+            "buildUrl": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+            "reportName": "Allure Report",
+            "reportUrl": "https://iskrakrasimirova.github.io/AppiumSauceLabsAutomation/"
+          }
+          EOF
+
+      - name: Add environment.properties
+        run: |
+          cat <<EOF > merged-allure-results/environment.properties
+          Device=Pixel 7
+          OS=Android 13
+          API Level=33
+          Framework=Appium + JUnit5 (Java)
+          Build Tool=Maven
+          Executor=GitHub Actions
+          EOF
+
       - name: Install Allure CLI
         run: |
           curl -o allure.tgz -L https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.tgz

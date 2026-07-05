@@ -86,6 +86,7 @@ jobs:
         with:
           name: screenshots-${{ matrix.suite }}
           path: Reports/screenshots/
+          if-no-files-found: warn
 
       - name: Upload logs
         if: always()

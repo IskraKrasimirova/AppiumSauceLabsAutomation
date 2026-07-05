@@ -11,14 +11,16 @@ public class FailureWatcher implements TestWatcher {
     @Override
     public void testFailed(ExtensionContext context, Throwable cause) {
         String testName = context.getDisplayName();
-
         String screenshotPath = ScreenshotUtils.takeScreenshot(testName);
 
         if (screenshotPath != null) {
             try {
-                byte[] screenshotBytes = Files.readAllBytes(Path.of(screenshotPath));
-                Allure.addAttachment("Screenshot - " + testName, "image/png",
-                        new String(screenshotBytes), ".png");
+                Allure.addAttachment(
+                        "Screenshot - " + testName,
+                        "image/png",
+                        Files.newInputStream(Path.of(screenshotPath)),
+                        ".png"
+                );
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -36,7 +36,8 @@ public class ScreenshotUtils {
 
             File destFile = new File(filePath);
             Files.copy(srcFile.toPath(), destFile.toPath());
-
+            // Log for debugging
+            System.out.println("Screenshot saved at: " + destFile.getAbsolutePath());
             return filePath;
 
         } catch (IOException e) {

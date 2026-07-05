@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 
 public class OrderCompletePage extends BasePage {
     private final By checkoutHeaderLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/completeTV");
+
     private WebElement checkoutHeader() {
         return driver.findElement(checkoutHeaderLocator);
     }

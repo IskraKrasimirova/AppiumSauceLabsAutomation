@@ -4,7 +4,6 @@ import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.List;
 
@@ -38,72 +37,6 @@ public class CatalogPage extends BasePage {
     public NavBar navBar() {
         return new NavBar(driver);
     }
-
-    /*public boolean isAtCatalogPage() {
-        int attempts = 2;
-        int sleepBetweenAttempts = 4000;
-
-        for (int i = 0; i < attempts; i++) {
-            try {
-                WebElement header = driverExt.waitUntilVisibleAndReturn(productsHeaderLocator);
-                return header.isDisplayed();
-            } catch (Exception e) {
-                System.out.println("DEBUG isAtCatalogPage attempt " + (i + 1) + " failed: " + e.getMessage());
-                if (i < attempts - 1) {
-                    try {
-                        Thread.sleep(sleepBetweenAttempts);
-                    } catch (InterruptedException ignored) {}
-                }
-            }
-        }
-
-        return false;
-    }*/
-
-    /*public boolean isAtCatalogPage() {
-        int attempts = 3;
-        int sleepBetweenAttempts = 5000;
-
-        for (int i = 0; i < attempts; i++) {
-            try {
-                driverExt.waitUntilVisible(productsHeaderLocator);
-                return productsHeader().isDisplayed() && productsList().isDisplayed();
-            } catch (Exception e) {
-                System.out.println("DEBUG isAtCatalogPage attempt " + (i + 1) + " failed: " + e.getMessage());
-                if (i < attempts - 1) {
-                    try {
-                        Thread.sleep(sleepBetweenAttempts);
-                    } catch (InterruptedException ignored) {}
-                }
-            }
-        }
-
-        return false;
-    }*/
-
-    /*public boolean isAtCatalogPage() {
-        int attempts = 2; // 1 normal run + 1 retry
-
-        for (int i = 0; i < attempts; i++) {
-            try {
-                // explicit wait: 20–25 sec in CI
-                driverExt.waitUntilVisible(productsHeaderLocator);
-
-                return productsHeader().isDisplayed() &&
-                        productsList().isDisplayed();
-            } catch (Exception e) {
-                // only in failure → 2 sec sleep
-                if (i < attempts - 1) {
-                    try { // CI‑specific stabilization pattern
-                        Thread.sleep(2000);
-                    } catch (InterruptedException ignored) {
-                    }
-                }
-            }
-        }
-
-        return false;
-    }*/
 
     /*public boolean isAtCatalogPage() {
         driverExt.waitUntilVisible(productsHeaderLocator);

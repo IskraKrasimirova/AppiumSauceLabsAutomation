@@ -31,7 +31,6 @@ public class NavBar {
     }
 
     public NavBar(AppiumDriver driver) {
-
         this.driver = driver;
     }
 

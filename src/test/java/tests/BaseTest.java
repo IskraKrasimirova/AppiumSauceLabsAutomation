@@ -6,10 +6,10 @@ import io.qameta.allure.junit5.AllureJunit5;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
-import utils.FailureWatcher;
+import utils.ScreenshotOnFailureExtension;
 import utils.ScreenshotUtils;
 
-@ExtendWith({AllureJunit5.class, FailureWatcher.class})
+@ExtendWith({AllureJunit5.class, ScreenshotOnFailureExtension.class})
 public abstract class BaseTest {
     protected AppiumDriver driver;
 

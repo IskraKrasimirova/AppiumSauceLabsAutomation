@@ -55,7 +55,8 @@ public class DriverFactory {
             // Appium startup sleep waiting for stable application, OS process
             if (settings.IsCi) {
                 try {
-                    Thread.sleep(20000);
+                    //Thread.sleep(20000);
+                    Thread.sleep(1);
                 } catch (InterruptedException ignored) {}
             }
 

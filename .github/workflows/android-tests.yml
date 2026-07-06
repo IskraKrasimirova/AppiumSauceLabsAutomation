@@ -58,7 +58,7 @@ jobs:
           script: |
             nohup adb logcat > logcat.log 2>&1 &
             nohup appium > appium.log 2>&1 &
-            sleep 1
+            sleep 35
             mvn -B -Dtest=${{ matrix.suite }} test
 
       - name: Upload allure results

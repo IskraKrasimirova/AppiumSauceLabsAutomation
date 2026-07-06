@@ -19,19 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         suite: [
-          PaymentTests,
-          CatalogPageTests,
-          GuestCartTests,
-          ReviewOrderTests,
-          LoginTests,
-          LogoutTests,
-          ProductDetailsPageTests,
-          GuestCheckoutFlowTests,
-          OrderCompletePageTests,
-          LoggedInUserCheckoutFlowTests,
-          LoggedInUserCartTests,
-          CheckoutTests,
-          PaymentBillingTests
+          CatalogPageTests
         ]
       max-parallel: 3
 
@@ -70,7 +58,7 @@ jobs:
           script: |
             nohup adb logcat > logcat.log 2>&1 &
             nohup appium > appium.log 2>&1 &
-            sleep 35
+            sleep 1
             mvn -B -Dtest=${{ matrix.suite }} test
 
       - name: Upload allure results

@@ -1,6 +1,5 @@
 package tests;
 
-import config.ConfigReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -19,6 +18,8 @@ public class CatalogPageTests extends BaseTest {
     void setUpPage() {
         catalogPage = new CatalogPage(driver);
         assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
+        // Just to fail tests -> TO DELETE THE RAW!
+        assertTrue(false, "Forced failure for screenshot test");
     }
 
     @Test

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import utils.ScreenshotOnFailureExtension;
 import utils.ScreenshotUtils;
 
-@ExtendWith({AllureJunit5.class, ScreenshotOnFailureExtension.class})
+@ExtendWith({ScreenshotOnFailureExtension.class, AllureJunit5.class})
 public abstract class BaseTest {
     protected AppiumDriver driver;
 

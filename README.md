@@ -117,6 +117,7 @@ The CI pipeline generates a full **Allure HTML report**, published automatically
 https://iskrakrasimirova.github.io/AppiumSauceLabsAutomation/
 
 The report includes execution history (Trends), environment details (Pixel 7, Android 13, API 33), and direct links to the corresponding GitHub Actions runs.
+A screenshot is automatically attached to the Allure report whenever a test fails.
 
 ---
 

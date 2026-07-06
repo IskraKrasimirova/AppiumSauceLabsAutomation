@@ -18,16 +18,12 @@ public class CatalogPageTests extends BaseTest {
     void setUpPage() {
         catalogPage = new CatalogPage(driver);
         assertTrue(catalogPage.isAtCatalogPage(), "Catalog page is not visible");
-        // Just to fail tests -> TO DELETE THE RAW!
-        assertTrue(false, "Forced failure for screenshot in BeforeEach");
     }
 
     @Test
     void catalogShowsVisibleProducts() {
         int visibleCount = catalogPage.getVisibleProductCount();
         assertTrue(visibleCount > 0, "Catalog should show at least one visible product");
-        // Just to fail tests -> TO DELETE THE RAW!
-        assertTrue(false, "Forced failure for screenshot test");
     }
 
     @Test

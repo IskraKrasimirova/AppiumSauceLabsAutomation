@@ -19,7 +19,19 @@ jobs:
       fail-fast: false
       matrix:
         suite: [
-          CatalogPageTests
+          PaymentTests,
+          CatalogPageTests,
+          GuestCartTests,
+          ReviewOrderTests,
+          LoginTests,
+          LogoutTests,
+          ProductDetailsPageTests,
+          GuestCheckoutFlowTests,
+          OrderCompletePageTests,
+          LoggedInUserCheckoutFlowTests,
+          LoggedInUserCartTests,
+          CheckoutTests,
+          PaymentBillingTests
         ]
       max-parallel: 3
 

@@ -24,12 +24,10 @@ public class MenuComponent {
     }
 
     public void openCatalog() {
-
         catalogMenuItem().click();
     }
 
     public void openLogin() {
-
         loginMenuItem().click();
     }
 

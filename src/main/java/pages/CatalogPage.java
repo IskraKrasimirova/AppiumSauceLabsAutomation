@@ -49,8 +49,8 @@ public class CatalogPage extends BasePage {
 
         try {
             driverExt.waitUntilVisible(productsHeaderLocator);
-            var title = driver.findElement(productsHeaderLocator);
-            System.out.println("DEBUG: Title text = " + title.getText());
+            String title = productsHeader().getText();
+            System.out.println("DEBUG: Title text = " + title);
             return true;
         } catch (Exception e) {
             System.out.println("DEBUG: Catalog page NOT visible. Exception: " + e);

@@ -32,7 +32,7 @@ public class SystemDialogComponent {
 
     private WebElement anrDialogText() {
         return driver.findElement(anrMessageLocator);
-    } // App isn’t responding
+    } // Pixel Launcher isn’t responding
 
     private WebElement anrCloseButton() {
         return driver.findElement(anrCloseButtonLocator);

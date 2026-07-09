@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 
 public class CheckoutPage extends BasePage {
     private final CheckoutSection checkoutSection;
+
     private final By checkoutHeaderLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/checkoutTitleTV");
 
     private WebElement checkoutHeader() {

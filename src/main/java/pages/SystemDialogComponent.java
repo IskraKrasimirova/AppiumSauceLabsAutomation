@@ -46,19 +46,31 @@ public class SystemDialogComponent {
         this.driver = driver;
     }
 
+    /*public boolean isAnrDialogVisible() {
+        return !driver.findElements(anrMessageLocator).isEmpty()
+                && anrDialogText().getText().contains("isn't responding");
+    }
+
     public boolean isCrashDialogVisible() {
-        return !driver.findElements(systemDialogLocator).isEmpty()
-                && crashDialogText().isDisplayed()
+        return !driver.findElements(crashDialogTextLocator).isEmpty()
                 && crashDialogText().getText().contains("keeps stopping");
+    }*/
+
+    public boolean isCrashDialogVisible() {
+        if (driver.findElements(crashDialogTextLocator).isEmpty()) return false;
+        return crashDialogText().getText().contains("keeps stopping");
     }
 
     public boolean isAnrDialogVisible() {
-        return !driver.findElements(systemDialogLocator).isEmpty()
-                && anrDialogText().isDisplayed()
-                && anrDialogText().getText().contains("isn’t responding");
+        if (driver.findElements(anrMessageLocator).isEmpty()) return false;
+        return anrDialogText().getText().contains("isn't responding");
     }
 
     public void handleDialog() {
+        if (!driver.findElements(systemDialogLocator).isEmpty()) {
+            System.out.println("DEBUG Dialog page source: " + driver.getPageSource());
+        }
+
         if (isCrashDialogVisible()) {
             System.out.println("Crash dialog detected.");
             crashCloseButton().click();

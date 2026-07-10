@@ -10,87 +10,66 @@ public class SystemDialogComponent {
     private static final String APP_PACKAGE = "com.saucelabs.mydemoapp.android";
 
     private final AppiumDriver driver;
-    private final By systemDialogLocator = AppiumBy.id("android:id/parentPanel");
 
-    // Crash dialog locators
-    private final By crashDialogTextLocator = AppiumBy.id("android:id/alertTitle");
-    private final By crashCloseButtonLocator = AppiumBy.id("android:id/aerr_close");
-    private final By crashAppInfoButtonLocator = AppiumBy.id("android:id/aerr_app_info");
+    // Crash and ANR dialog locators (App isn’t responding)
+    private final By dialogTitleLocator = AppiumBy.id("android:id/alertTitle");
+    private final By closeButtonLocator = AppiumBy.id("android:id/aerr_close");
+    private final By waitButtonLocator = AppiumBy.id("android:id/aerr_wait");
 
-    // ANR dialog locators (App isn’t responding)
-    private final By anrMessageLocator = AppiumBy.id("android:id/message");
-    private final By anrCloseButtonLocator = AppiumBy.id("android:id/button1");
-    private final By anrWaitButtonLocator = AppiumBy.id("android:id/button2");
+    // Crash Dialog Text - My Demo App keeps stopping
+    // ANR Dialog Text - Pixel Launcher isn’t responding
 
-    private WebElement crashDialogText() {
-        return driver.findElement(crashDialogTextLocator);
-    } // My Demo App keeps stopping
-
-    private WebElement crashCloseButton() {
-        return driver.findElement(crashCloseButtonLocator);
+    private WebElement dialogTitle() {
+        return driver.findElement(dialogTitleLocator);
     }
 
-    private WebElement anrDialogText() {
-        return driver.findElement(anrMessageLocator);
-    } // Pixel Launcher isn’t responding
-
-    private WebElement anrCloseButton() {
-        return driver.findElement(anrCloseButtonLocator);
+    private WebElement closeButton() {
+        return driver.findElement(closeButtonLocator);
     }
 
-    private WebElement anrWaitButton() {
-        return driver.findElement(anrWaitButtonLocator);
+    private WebElement waitButton() {
+        return driver.findElement(waitButtonLocator);
     }
 
     public SystemDialogComponent(AppiumDriver driver) {
         this.driver = driver;
     }
 
-    /*public boolean isAnrDialogVisible() {
-        return !driver.findElements(anrMessageLocator).isEmpty()
-                && anrDialogText().getText().contains("isn't responding");
-    }
-
     public boolean isCrashDialogVisible() {
-        return !driver.findElements(crashDialogTextLocator).isEmpty()
-                && crashDialogText().getText().contains("keeps stopping");
-    }*/
-
-    public boolean isCrashDialogVisible() {
-        if (driver.findElements(crashDialogTextLocator).isEmpty()) return false;
-        return crashDialogText().getText().contains("keeps stopping");
+        return isDialogVisible("keeps stopping");
     }
 
     public boolean isAnrDialogVisible() {
-        if (driver.findElements(anrMessageLocator).isEmpty()) return false;
-        return anrDialogText().getText().contains("isn't responding");
+        return isDialogVisible("isn't responding");
     }
 
     public void handleDialog() {
-        if (!driver.findElements(systemDialogLocator).isEmpty()) {
-            System.out.println("DEBUG Dialog page source: " + driver.getPageSource());
-        }
-
         if (isCrashDialogVisible()) {
             System.out.println("Crash dialog detected.");
-            crashCloseButton().click();
+            closeButton().click();
 
             // Restart app after crash
             restartApp();
-
             return;
         }
 
         if (isAnrDialogVisible()) {
             System.out.println("ANR dialog detected.");
             // Prefer Wait
-            if (!driver.findElements(anrWaitButtonLocator).isEmpty()) {
-                anrWaitButton().click(); // Let the app recover
+            if (!driver.findElements(waitButtonLocator).isEmpty()) {
+                waitButton().click();
+                // Let the app recover
+                try { Thread.sleep(3000); } catch (InterruptedException ignored) {}
             } else {
-                anrCloseButton().click(); // Android decided to kill it
+                closeButton().click(); // Android decided to kill it
                 restartApp();
             }
         }
+    }
+
+    private boolean isDialogVisible(String expectedText) {
+        if (driver.findElements(dialogTitleLocator).isEmpty()) return false;
+        return dialogTitle().getText().contains(expectedText);
     }
 
     private void restartApp() {

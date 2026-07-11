@@ -29,6 +29,11 @@ public class DriverExtensions {
         createWait().until(ExpectedConditions.elementToBeClickable(element));
     }
 
+    public void waitUntilClickable(By locator) {
+        new SystemDialogComponent(driver).handleDialog();
+        createWait().until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
     public void waitUntilClickable(WebElement element, int timeoutSeconds) {
         createWait(timeoutSeconds).until(ExpectedConditions.elementToBeClickable(element));
     }

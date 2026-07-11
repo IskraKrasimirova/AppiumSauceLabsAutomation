@@ -4,18 +4,24 @@ import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.touch.offset.PointOption;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
+import utils.DriverExtensions;
 
 import java.time.Duration;
 import java.util.Collections;
 
 public class NavBar {
     private final AppiumDriver driver;
+    private final DriverExtensions driverExt;
+
+    private final By menuButtonLocator = AppiumBy.accessibilityId("View menu");
+    private final By cartButtonLocator = AppiumBy.id("com.saucelabs.mydemoapp.android:id/cartIV");
 
     private WebElement menuButton() {
-        return driver.findElement(AppiumBy.accessibilityId("View menu"));
+        return driver.findElement(menuButtonLocator);
     }
 
     private WebElement appName() {
@@ -27,11 +33,12 @@ public class NavBar {
     }
 
     private WebElement cartButton() {
-        return driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/cartIV"));
+        return driver.findElement(cartButtonLocator);
     }
 
     public NavBar(AppiumDriver driver) {
         this.driver = driver;
+        this.driverExt = new DriverExtensions(driver);
     }
 
     public MenuComponent menu() {
@@ -39,6 +46,7 @@ public class NavBar {
     }
 
     public void openMenu() {
+        driverExt.waitUntilClickable(menuButtonLocator);
         menuButton().click();
     }
 
@@ -54,6 +62,7 @@ public class NavBar {
     }
 
     public void openCart() {
+        driverExt.waitUntilClickable(cartButtonLocator);
         cartButton().click();
     }
 }

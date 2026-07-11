@@ -17,7 +17,7 @@ public class SystemDialogComponent {
     private final By waitButtonLocator = AppiumBy.id("android:id/aerr_wait");
 
     // Crash Dialog Text - My Demo App keeps stopping
-    // ANR Dialog Text - Pixel Launcher isn’t responding
+    // ANR Dialog Text - Pixel Launcher isn’t responding or System UI isn't responding
 
     private WebElement dialogTitle() {
         return driver.findElement(dialogTitleLocator);
@@ -59,7 +59,10 @@ public class SystemDialogComponent {
             if (!driver.findElements(waitButtonLocator).isEmpty()) {
                 waitButton().click();
                 // Let the app recover
-                try { Thread.sleep(3000); } catch (InterruptedException ignored) {}
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException ignored) {
+                }
             } else {
                 closeButton().click(); // Android decided to kill it
                 restartApp();
@@ -75,5 +78,9 @@ public class SystemDialogComponent {
     private void restartApp() {
         ((InteractsWithApps) driver).terminateApp(APP_PACKAGE);
         ((InteractsWithApps) driver).activateApp(APP_PACKAGE);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException ignored) {
+        }
     }
 }

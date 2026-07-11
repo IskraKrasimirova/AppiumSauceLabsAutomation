@@ -8,6 +8,7 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import pages.SystemDialogComponent;
 
 import java.time.Duration;
 
@@ -41,6 +42,7 @@ public class DriverExtensions {
     }
 
     public void waitUntilVisible(By locator) {
+        new SystemDialogComponent(driver).handleDialog();
         createWait().until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 

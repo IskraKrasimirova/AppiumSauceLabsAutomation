@@ -15,6 +15,10 @@ public abstract class BasePage {
         this.driverExt = new DriverExtensions(driver);
     }
 
+    protected void handleSystemDialog() {
+        new SystemDialogComponent(driver).handleDialog();
+    }
+
     public void scrollUntilVisible(WebElement element, int maxScrolls) {
         int scrollCount = 0;
 

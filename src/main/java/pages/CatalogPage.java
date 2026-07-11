@@ -47,8 +47,6 @@ public class CatalogPage extends BasePage {
     public boolean isAtCatalogPage() {
         System.out.println("DEBUG: Checking if Catalog page is visible...");
 
-        new SystemDialogComponent(driver).handleDialog();
-
         try {
             driverExt.waitUntilVisible(productsHeaderLocator);
             String title = productsHeader().getText();
@@ -79,6 +77,7 @@ public class CatalogPage extends BasePage {
     }
 
     public void scrollToProduct(int index) {
+        handleSystemDialog();
         scrollUntilVisible(productImages().get(index), 10);
     }
 }
